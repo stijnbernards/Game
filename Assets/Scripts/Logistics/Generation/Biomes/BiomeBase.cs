@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class BiomeBase : MonoBehaviour {
 
     public GameObject groundSprite;
+    public GameObject fillSprite;
     public List<GameObject> decals;
     public int height;
     public int width;
@@ -15,39 +16,39 @@ public class BiomeBase : MonoBehaviour {
     {
         SpawnPoint = transform.position;
 
-        this.BuildLandPlot();
-        StartCoroutine(RenderRoad());
+        StartCoroutine(RenderPath());
     }
 
     public virtual void BuildLandPlot()
     {
         for(int i = 0; i < height; i++)
             for(int i2 = 0; i2 < width; i2++)
-                SpawnBlock(new Vector2(i, i2));
+                SpawnBlock(new Vector3(i, i2, 0), groundSprite);
+    }
+
+    public virtual void FillLand()
+    {
+        for (int i = 0; i < height; i++)
+            for (int i2 = 0; i2 < width; i2++)
+                SpawnBlock(new Vector3(i, i2, 1), fillSprite);
     }
 
     public virtual IEnumerator RenderDecal()
     {
-        while (true)
-        {
-            yield return new WaitForSeconds(0.01f);
-
-        }
+        return null;
     }
 
-    public virtual IEnumerator RenderRoad()
+    public virtual IEnumerator RenderPath()
     {
-        while (true)
-        {
-            yield return new WaitForSeconds(0.01f);
-        }
+        return null;
     }
 
-    public bool SpawnBlock(Vector2 OffsetLocation)
+    public GameObject SpawnBlock(Vector3 OffsetLocation, GameObject sprite)
     {
-        GameObject groundTile = GameObject.Instantiate(groundSprite, OffsetLocation, Quaternion.identity) as GameObject;
+        GameObject groundTile = GameObject.Instantiate(sprite, OffsetLocation, Quaternion.identity) as GameObject;
         groundTile.transform.position = OffsetLocation;
         groundTile.transform.parent = transform.FindChild("Ground");
-        return true;
+
+        return groundTile;
     }
 }
