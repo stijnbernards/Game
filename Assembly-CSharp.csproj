@@ -46,9 +46,20 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\Entity\Player\PlayerController.cs" />
-     <Compile Include="Assets\Scripts\Logistics\Generation\Biomes\BiomeBase.cs" />
-     <Compile Include="Assets\Scripts\Logistics\Generation\Biomes\Dungeon.cs" />
+     <Compile Include="Assets\Scripts\Character\Camera.cs" />
+     <Compile Include="Assets\Scripts\Character\Character.cs" />
+     <Compile Include="Assets\Scripts\Character\CharacterBehaviour.cs" />
+     <Compile Include="Assets\Scripts\Character\Classes\Class.cs" />
+     <Compile Include="Assets\Scripts\Character\Classes\Rogue.cs" />
+     <Compile Include="Assets\Scripts\Character\Races\Halfling.cs" />
+     <Compile Include="Assets\Scripts\Character\Races\Race.cs" />
+     <Compile Include="Assets\Scripts\Character\Skills\Categories\Category.cs" />
+     <Compile Include="Assets\Scripts\Etc\Point.cs" />
+     <Compile Include="Assets\Scripts\GameState.cs" />
+     <Compile Include="Assets\Scripts\Level\Generation\Caves.cs" />
+     <Compile Include="Assets\Scripts\Level\Generation\Generate.cs" />
+     <Compile Include="Assets\Scripts\Level\LevelStart.cs" />
+     <Compile Include="Assets\Scripts\Menu\CreateCharacter.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Users/Stijn/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
