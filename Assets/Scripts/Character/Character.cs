@@ -2,7 +2,20 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Character{
+//Separated from Entity's bcuz stuff
+public class Character {
+
+    public GameObject Player
+    {
+        get
+        {
+            return this.player;
+        }
+        set
+        {
+            this.player = value;
+        }
+    }
 
     public Race CharRace
     {
@@ -19,6 +32,8 @@ public class Character{
             return this.charClass;
         }
     }
+    public float MoveSpeed = 1f;
+    public float AttackSpeed = 1f;
 
     private Class charClass;
     private Race charRace;
@@ -37,7 +52,7 @@ public class Character{
         this.player.AddComponent<CharacterBehaviour>();
         //Create the camera object
         this.camera = (GameObject)GameObject.Instantiate(Resources.Load("Camera"));
-        Camera cam = this.camera.AddComponent<Camera>();
+        Cam cam = this.camera.AddComponent<Cam>();
         cam.target = this.player;
     }
 }

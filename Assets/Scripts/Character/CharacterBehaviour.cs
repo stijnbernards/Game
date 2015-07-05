@@ -9,7 +9,7 @@ public class CharacterBehaviour : MonoBehaviour {
     public void Update()
     {
         CheckInput();
-        if (moving && GameState.Instance.Map[(int)pos.x, (int)pos.y] == 0)
+        if (moving && GameState.Instance.Map.Obstacles.IndexOf(GameState.Instance.Map.map[(int)pos.x, (int)pos.y].TileNumber) == -1)
         {
             transform.position = pos;
             moving = false;
@@ -18,6 +18,7 @@ public class CharacterBehaviour : MonoBehaviour {
         {
             moving = false;
         }
+        this.pos = GameState.Instance.Character.Player.transform.position;
     }
 
     void CheckInput()

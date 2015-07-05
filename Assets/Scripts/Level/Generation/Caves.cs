@@ -11,8 +11,8 @@ public class Caves : Generate{
     public override void GenerateLevel()
     {
         while (!Generate());
-        BuildLevel();
-        
+        GameState.Instance.Map = this;
+        this.Obstacles.Add(1);
     }
 
     /// <summary>
@@ -21,7 +21,7 @@ public class Caves : Generate{
     /// <returns>succeeded flooding percentage check</returns>
     bool Generate()
     {
-        map = new int[width, height];
+        map = new Tile[width, height];
         RandomFillLevel();
         for (int i = 0; i < smoothing; i++)
         {
@@ -46,9 +46,14 @@ public class Caves : Generate{
             for (int y = 0; y < height; y++)
             {
                 if (x == 0 || x == width - 1 || y == 0 || y == height - 1)
-                    map[x, y] = 1;
+                    map[x, y] = new Tile()
+                    {
+                        TileNumber = 1
+                    };
                 else
-                    map[x, y] = (rng.Next(0, 100) < randomFillPercent) ? 1 : 0;
+                    map[x, y] = new Tile(){
+                        TileNumber = (rng.Next(0, 100) < randomFillPercent) ? 1 : 0
+                    };
             }
         }
     }
@@ -62,7 +67,7 @@ public class Caves : Generate{
         {
             for (int y = 0; y < height; y++)
             {
-                map[x, y] = WallPlaceLogic(x, y);
+                map[x, y].TileNumber = WallPlaceLogic(x, y);
             }
         }
     }
@@ -76,7 +81,7 @@ public class Caves : Generate{
     int WallPlaceLogic(int x, int y)
     {
         int nWallTiles = GetSurroundingWalls(x, y);
-        if (map[x, y] == 1)
+        if (map[x, y].TileNumber == 1)
         {
             if (nWallTiles >= 4)
                 return 1;
@@ -106,7 +111,7 @@ public class Caves : Generate{
                 if (nX >= 0 && nX < width && nY >= 0 && nY < height)
                 {
                     if (nX != x || nY != y)
-                        wallCount += map[nX, nY];
+                        wallCount += map[nX, nY].TileNumber;
                 }
                 else
                 {
@@ -134,7 +139,7 @@ public class Caves : Generate{
         while(generated){
             startX = Random.Range(0, width);
             startY = Random.Range(0, height);
-            if(map[startX, startY] != 1)
+            if(map[startX, startY].TileNumber != 1)
                 generated = false;
         }
 
@@ -144,11 +149,11 @@ public class Caves : Generate{
         {
             for (int y = 0; y < height; y++)
             {
-                if (map[x, y] == 0)
-                    map[x, y] = 1;
-                else if (map[x, y] == 3)
+                if (map[x, y].TileNumber == 0)
+                    map[x, y].TileNumber = 1;
+                else if (map[x, y].TileNumber == 3)
                 {
-                    map[x, y] = 0;
+                    map[x, y].TileNumber = 0;
                     percentage++;
                 }
             }
@@ -156,7 +161,7 @@ public class Caves : Generate{
 
         percentage = percentage / ((width * height) / 100);
 
-        if (percentage > 40)
+        if (percentage > randomFillPercent - 10)
             return true;
 
         return false;
@@ -171,12 +176,12 @@ public class Caves : Generate{
         int x = (int)pos.x;
         int y = (int)pos.y;
 
-        if (map[x, y] == 3)
+        if (map[x, y].TileNumber == 3)
             return;
-        else if (map[x, y] == 1)
+        else if (map[x, y].TileNumber == 1)
             return;
         else
-            map[x, y] = 3;
+            map[x, y].TileNumber = 3;
 
         CheckTiles(new Vector2(x + 1, y));
         CheckTiles(new Vector2(x, y + 1));
@@ -187,7 +192,7 @@ public class Caves : Generate{
     /// <summary>
     /// Visualizes the int[,] map
     /// </summary>
-    void BuildLevel()
+    public override void BuildLevel()
     {
         if (map != null)
         {
@@ -198,10 +203,18 @@ public class Caves : Generate{
                     Vector3 offset = new Vector3(x, y, 1f);
                     GameObject tile;
 
-                    if (map[x, y] == 1)
+                    if (map[x, y].TileNumber == 1)
                         tile = GameObject.Instantiate(wallSprite, offset, Quaternion.identity) as GameObject;
-                    else
+                    else if(map[x, y].TileNumber == 0)
                         tile = GameObject.Instantiate(groundSprite, offset, Quaternion.identity) as GameObject;
+                    else if(map[x, y].TileNumber == 2)
+                    {
+                        tile = GameObject.Instantiate(startSprite, offset, Quaternion.identity) as GameObject;
+                    }
+                    else
+                    {
+                        tile = GameObject.Instantiate(endSprite, offset, Quaternion.identity) as GameObject;
+                    }
 
                     tile.transform.position = offset;
                 }

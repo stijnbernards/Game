@@ -1,13 +1,30 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GameState : MonoBehaviour {
+public class GameState : MonoBehaviour
+{
 
-    //The game instance
-    private static GameState instance;
+    #region Properties
+    public Generate Map;
 
-    public int[,] Map;
+    public double Turn
+    {
+        get
+        {
+            return this.turn;
+        }
+        set
+        {
+            this.turn = value;
+            if (this.turn <= 0)
+            {
+                //TODO: NPC handler stuff...
+                NPCHandler();
+                this.turn = 100 - this.turn;
+            }
 
+        }
+    }
     public Character Character
     {
         get
@@ -19,10 +36,6 @@ public class GameState : MonoBehaviour {
             this.character = value;
         }
     }
-
-    private Character character;
-
-
     public static GameState Instance{
         get
         {
@@ -33,6 +46,11 @@ public class GameState : MonoBehaviour {
             return instance;
         }
     }
+    #endregion
+
+    private Character character;
+    private static GameState instance;
+    private double turn = 100.0;
 
     public void OnApplicationQuit()
     {
@@ -44,5 +62,10 @@ public class GameState : MonoBehaviour {
         this.character = new Character(new Rogue(), new Halfling());
         //Disabled for debugging purposes
         //Application.LoadLevel("Game");
+    }
+
+    private void NPCHandler()
+    {
+
     }
 }
