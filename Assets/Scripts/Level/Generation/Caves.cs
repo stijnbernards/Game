@@ -1,11 +1,20 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Caves : Generate{
 
     public GameObject groundSprite;
     public GameObject wallSprite;
     public int smoothing;
+    public List<EntityRarity> entitySpawnList = new List<EntityRarity>()
+    {
+        new EntityRarity()
+        {
+            Ent = new Spoder(),
+            Rarity = 2
+        }
+    };
 
     //Speaks for itself...
     public override void GenerateLevel()
@@ -13,12 +22,13 @@ public class Caves : Generate{
         while (!Generate());
         GameState.Instance.Map = this;
         this.Obstacles.Add(1);
+        SpawnEntitys();
     }
 
     /// <summary>
     /// Generates the level
     /// </summary>
-    /// <returns>succeeded flooding percentage check</returns>
+    /// <return>Succeeded flooding percentage check</returns>
     bool Generate()
     {
         map = new Tile[width, height];
@@ -128,7 +138,7 @@ public class Caves : Generate{
     /// if filled spot is greater than 40% this function returns true and accepts the map.
     /// Also fills all dead spots with walls
     /// </summary>
-    /// <returns>Boolean map ok or no ok</returns>
+    /// <returns>Boolean map ok or no ok :(</returns>
     bool FloodFillCheck()
     {
         bool generated = true;
@@ -200,7 +210,7 @@ public class Caves : Generate{
             {
                 for (int y = 0; y < height; y++)
                 {
-                    Vector3 offset = new Vector3(x, y, 1f);
+                    Vector3 offset = new Vector3(x, y, 0f);
                     GameObject tile;
 
                     if (map[x, y].TileNumber == 1)
@@ -219,6 +229,18 @@ public class Caves : Generate{
                     tile.transform.position = offset;
                 }
             }
+        }
+    }
+
+    public override void SpawnEntitys()
+    {
+        System.Random rand = new System.Random();
+        int x, y;
+
+        for(int i = 0; i < 250; i++ )
+        {
+            FindRandomEmpty(out x, out y);
+            this.entitys.Add(this.entitySpawnList[rand.Next(this.entitySpawnList.Count)].Ent.SpawnInWorld(new Vector2(x, y), (GameObject)Resources.Load("Spoder")));
         }
     }
 }

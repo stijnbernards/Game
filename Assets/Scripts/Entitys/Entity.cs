@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Entity {
 
@@ -10,16 +11,23 @@ public class Entity {
     public float Damage;
     #endregion
 
-    public GameObject EntitySprite;
+    public GameObject entity;
 
-    public Entity(float movespeed, float attackspeed, float defence, float damage)
+    public virtual Entity SpawnInWorld(Vector2 pos, GameObject sprite)
     {
-        this.Movespeed = movespeed;
-        this.Attackspeed = attackspeed;
-        this.Defence = defence;
-        this.Damage = damage;
+        this.entity = GameObject.Instantiate(sprite, pos, Quaternion.identity) as GameObject;
+        return this;
     }
 
-    //Should be implemented to set the entity sprite
-    public virtual void SetSprite() { }
+    public void MoveTo(float x, float y)
+    {
+        entity.transform.position = new Vector2(x, y);
+    }
+}
+
+public struct EntityRarity
+{
+    public Entity Ent;
+    //Not yet implemented
+    public int Rarity;
 }

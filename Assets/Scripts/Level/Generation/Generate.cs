@@ -15,12 +15,13 @@ public class GenerateBase : MonoBehaviour {
     public GameObject endSprite;
 
     [HideInInspector]
+    public List<Entity> entitys = new List<Entity>();
+    [HideInInspector]
     public Tile[,] map;
     [HideInInspector]
     public Point startPoint;
     [HideInInspector]
     public Point endPoint;
-
     [HideInInspector]
     public List<int> Obstacles = new List<int>();
 
@@ -53,6 +54,7 @@ public class GenerateBase : MonoBehaviour {
 
     public virtual void GenerateLevel() { }
     public virtual void BuildLevel() { }
+    public virtual void SpawnEntitys() { }
 }
 
 /// <summary>
