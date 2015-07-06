@@ -41,7 +41,6 @@ public class GenerateBase : MonoBehaviour {
 
     public void FindRandomEmpty(out int x, out int y)
     {
-
         while (true)
         {
             x = Random.Range(0, width);
@@ -49,7 +48,6 @@ public class GenerateBase : MonoBehaviour {
             if (map[x, y].TileNumber == 0)
                 return;
         }
-
     }
 
     public virtual void GenerateLevel() { }

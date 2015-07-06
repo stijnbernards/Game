@@ -10,13 +10,7 @@ public class CharacterBehaviour : MonoBehaviour {
     public void Update()
     {
         CheckInput();
-        Entity ent = (from Entity e in GameState.Instance.Map.entitys where (Vector2)e.entity.transform.position == pos select e).First();
-        Debug.Log(ent.entity.transform.position);
-        if(ent != null)
-        {
-            Debug.Log("Godverju");
-        }
-        else if (moving && GameState.Instance.Map.Obstacles.IndexOf(GameState.Instance.Map.map[(int)pos.x, (int)pos.y].TileNumber) == -1)
+        if (moving && GameState.Instance.Map.Obstacles.IndexOf(GameState.Instance.Map.map[(int)pos.x, (int)pos.y].TileNumber) == -1)
         {
             transform.position = pos;
             moving = false;
