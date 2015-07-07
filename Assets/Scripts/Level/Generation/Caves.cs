@@ -7,14 +7,6 @@ public class Caves : Generate{
     public GameObject groundSprite;
     public GameObject wallSprite;
     public int smoothing;
-    public List<EntityRarity> entitySpawnList = new List<EntityRarity>()
-    {
-        new EntityRarity()
-        {
-            Ent = new Spoder(),
-            Rarity = 2
-        }
-    };
 
     //Speaks for itself...
     public override void GenerateLevel()
@@ -237,10 +229,10 @@ public class Caves : Generate{
         System.Random rand = new System.Random();
         int x, y;
 
-        for(int i = 0; i < 10; i++ )
+        for(int i = 0; i < 1; i++ )
         {
             FindRandomEmpty(out x, out y);
-            this.entitys.Add(this.entitySpawnList[rand.Next(this.entitySpawnList.Count)].Ent.SpawnInWorld(new Vector2(x, y), (GameObject)Resources.Load("Spoder")));
+            this.entitys.Add(Spoder.SpawnInWorld(new Vector2(x, y), (GameObject)Resources.Load("Spoder")));
         }
     }
 }

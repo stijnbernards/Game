@@ -15,7 +15,7 @@ public class GenerateBase : MonoBehaviour {
     public GameObject endSprite;
 
     [HideInInspector]
-    public List<Entity> entitys = new List<Entity>();
+    public List<GameObject> entitys = new List<GameObject>();
     [HideInInspector]
     public Tile[,] map;
     [HideInInspector]

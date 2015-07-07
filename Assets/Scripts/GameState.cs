@@ -66,6 +66,10 @@ public class GameState : MonoBehaviour
 
     private void NPCHandler()
     {
-
+        foreach (GameObject ent in GameState.Instance.Map.entitys)
+        {
+            Entity mob = (Entity)ent.GetComponent(typeof(Entity));
+            mob.Action();
+        }
     }
 }

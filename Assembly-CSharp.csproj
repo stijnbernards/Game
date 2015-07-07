@@ -57,6 +57,7 @@
      <Compile Include="Assets\Scripts\Entitys\Entity.cs" />
      <Compile Include="Assets\Scripts\Entitys\Mobs\Spoder.cs" />
      <Compile Include="Assets\Scripts\Etc\Point.cs" />
+     <Compile Include="Assets\Scripts\Game.cs" />
      <Compile Include="Assets\Scripts\GameState.cs" />
      <Compile Include="Assets\Scripts\Level\Generation\Caves.cs" />
      <Compile Include="Assets\Scripts\Level\Generation\Generate.cs" />
