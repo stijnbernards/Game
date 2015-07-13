@@ -8,11 +8,15 @@ public class Caves : Generate{
     public GameObject wallSprite;
     public int smoothing;
 
+    public List<EntityItem> EntityList = new List<EntityItem>()
+    {
+        new EntityItem(Spoder.Name, 23),
+    };
+
     //Speaks for itself...
     public override void GenerateLevel()
     {
         while (!Generate());
-        GameState.Instance.Map = this;
         this.Obstacles.Add(1);
         SpawnEntitys();
     }
@@ -226,13 +230,15 @@ public class Caves : Generate{
 
     public override void SpawnEntitys()
     {
-        System.Random rand = new System.Random();
         int x, y;
 
-        for(int i = 0; i < 1; i++ )
+        foreach (EntityItem ei in EntityList)
         {
-            FindRandomEmpty(out x, out y);
-            this.entitys.Add(Spoder.SpawnInWorld(new Vector2(x, y), (GameObject)Resources.Load("Spoder")));
+            for (int i = 0; i < ei.Amount; i++)
+            {
+                FindRandomEmpty(out x, out y);
+                this.entitys.Add(Spoder.SpawnInWorld(new Vector2(x, y), (GameObject)Resources.Load(ei.Ent)));
+            }
         }
     }
 }

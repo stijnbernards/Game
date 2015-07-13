@@ -20,6 +20,7 @@ public class GameState : MonoBehaviour
             {
                 //TODO: NPC handler stuff...
                 NPCHandler();
+                GameState.Instance.Character.CharUpdate();
                 this.turn = 100 - this.turn;
             }
 
@@ -59,7 +60,7 @@ public class GameState : MonoBehaviour
 
     public void StartState()
     {
-        this.character = new Character(new Rogue(), new Halfling());
+        this.Character = new Character(new Rogue(), new Halfling());
         //Disabled for debugging purposes
         //Application.LoadLevel("Game");
     }
@@ -68,8 +69,11 @@ public class GameState : MonoBehaviour
     {
         foreach (GameObject ent in GameState.Instance.Map.entitys)
         {
-            Entity mob = (Entity)ent.GetComponent(typeof(Entity));
-            mob.Action();
+            if (ent != null)
+            {
+                Entity mob = (Entity)ent.GetComponent(typeof(Entity));
+                mob.Action();
+            }
         }
     }
 }

@@ -6,8 +6,7 @@ public class CreateCharacter : MonoBehaviour {
 
     public void StartCreateCharacter()
     {
-        DontDestroyOnLoad(GameState.Instance);
-        GameState.Instance.StartState();
+        Application.LoadLevel("Game");
     }
 
     void OnGUI()

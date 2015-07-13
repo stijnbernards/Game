@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 
 //Separated from Entity's bcuz stuff
-public class Character {
+public class Character
+{
 
+    #region Properties
     public GameObject Player
     {
         get
@@ -34,6 +36,30 @@ public class Character {
     }
     public float MoveSpeed = 1f;
     public float AttackSpeed = 1f;
+    public float HealthRegen = 0.8f;
+    public float MaxHealth = 10f;
+    public float Damage = 15f;
+    public float Health
+    {
+        get
+        {
+            return this.health;
+        }
+        set
+        {
+            this.health = value;
+            if (this.health <= 0)
+            {
+                CharacterBehaviour Char = (CharacterBehaviour)(this.player.GetComponent(typeof(CharacterBehaviour)));
+                Char.Kill();
+            }
+            if (this.health > this.MaxHealth)
+                this.Health = MaxHealth;
+        }
+    }
+    #endregion
+
+    private float health = 100;
 
     private Class charClass;
     private Race charRace;
@@ -48,11 +74,26 @@ public class Character {
         this.charRace = cRace;
 
         //Create the player object
-        this.player = (GameObject)GameObject.Instantiate(Resources.Load("Player"));
-        this.player.AddComponent<CharacterBehaviour>();
+        this.Player = (GameObject)GameObject.Instantiate(Resources.Load("Player"));
         //Create the camera object
         this.camera = (GameObject)GameObject.Instantiate(Resources.Load("Camera"));
         Cam cam = this.camera.AddComponent<Cam>();
         cam.target = this.player;
+    }
+
+    public void Hit(float amount)
+    {
+#if DEBUG
+        Debug.Log("Hit player for " + amount + " DMG HP LEFT:" + this.health);
+#endif
+        this.Health -= amount;
+    }
+
+    public void CharUpdate()
+    {
+        this.Health += HealthRegen;
+#if DEBUG
+        Debug.Log("Character hp: " + this.Health);
+#endif
     }
 }

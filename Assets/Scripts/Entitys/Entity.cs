@@ -5,8 +5,6 @@ using System.Collections.Generic;
 public class Entity : MonoBehaviour{
 
     #region Stats 
-    public string Name;
-
     public float Movespeed;
     public float Attackspeed;
     public float Defence;
@@ -27,9 +25,9 @@ public class Entity : MonoBehaviour{
     }
     #endregion
 
-    private float health;
+    private float health = 100;
 
-    public void Instantiate()
+    public virtual void Instantiate()
     {
         this.LOS = 10;
     }
@@ -68,30 +66,45 @@ public class Entity : MonoBehaviour{
     {
         Vector3 pPos = GameState.Instance.Character.Player.transform.position;
         Vector3 rad = pPos - transform.position;
+        Vector3 dir = new Vector3(0f, 0f, 0f);;
 
-#if DEBUG
-        Debug.Log(rad.x);
-        Debug.Log(-LOS);
-        Debug.Log(LOS);
-#endif
-
-        if((rad.x < LOS && rad.x > -LOS) && (rad.y <= LOS && rad.y > -LOS)){
+        if ((rad.x < LOS && rad.x > -LOS) && (rad.y <= LOS && rad.y > -LOS))
+        {
             if (rad.x > 0)
-                transform.position += Vector3.right;
+                dir += Vector3.right;
             else if (rad.x < 0)
-                transform.position += Vector3.left;
+                dir += Vector3.left;
 
             if (rad.y > 0)
-                transform.position += Vector3.up;
+                dir += Vector3.up;
             else if (rad.y < 0)
-                transform.position += Vector3.down;
+                dir += Vector3.down;
+
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, 2f);
+            if (hit.collider != null)
+                if (hit.collider.gameObject.GetComponent(typeof(CharacterBehaviour)) != null)
+                    GameState.Instance.Character.Hit(Damage);
+                else
+                    FindSpot(dir);
+            else
+                transform.position += dir;
         }
+    }
+
+    private void FindSpot(Vector3 dir)
+    {
+
     }
 }
 
-public struct EntityRarity
+public struct EntityItem
 {
-    public Entity Ent;
-    //Not yet implemented
-    public int Rarity;
+    public string Ent { get; set; }
+    public int Amount { get; set; }
+
+    public EntityItem(string ent, int amount)
+    {
+        this.Ent = ent;
+        this.Amount = amount;
+    }
 }

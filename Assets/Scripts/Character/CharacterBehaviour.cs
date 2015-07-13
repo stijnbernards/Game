@@ -14,8 +14,9 @@ public class CharacterBehaviour : MonoBehaviour {
             RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, 1f);
             if (hit.collider != null)
             {
-                Entity spoder = (Entity)hit.collider.gameObject.GetComponent(typeof(Entity));
-                spoder.Hit(10);
+                Entity entity = (Entity)hit.collider.gameObject.GetComponent(typeof(Entity));
+                entity.Hit(GameState.Instance.Character.Damage);
+                GameState.Instance.Turn -= 100;
             }
             else if (moving && GameState.Instance.Map.Obstacles.IndexOf(GameState.Instance.Map.map[(int)(transform.position.x + dir.x), (int)(transform.position.y + dir.y)].TileNumber) == -1)
             {
@@ -61,5 +62,13 @@ public class CharacterBehaviour : MonoBehaviour {
         {
             return false;
         }
+    }
+
+    public void Kill()
+    {
+        Destroy(gameObject);
+#if DEBUG
+        Debug.Log("Oh dear you died.");
+#endif
     }
 }

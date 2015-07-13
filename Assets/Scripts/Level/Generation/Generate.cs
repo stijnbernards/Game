@@ -25,20 +25,6 @@ public class GenerateBase : MonoBehaviour {
     [HideInInspector]
     public List<int> Obstacles = new List<int>();
 
-    void Start()
-    {
-        int x, y;
-        GenerateLevel();
-        FindRandomEmpty(out x, out y);
-        map[x, y].TileNumber = 2;
-        this.startPoint = new Point(x, y);
-        FindRandomEmpty(out x, out y);
-        map[x, y].TileNumber = 3;
-        this.endPoint = new Point(x, y);
-        GameState.Instance.Character.Player.transform.position = new Vector2(GameState.Instance.Map.startPoint.x, GameState.Instance.Map.startPoint.y);
-        BuildLevel();
-    }
-
     public void FindRandomEmpty(out int x, out int y)
     {
         while (true)
@@ -60,4 +46,20 @@ public class GenerateBase : MonoBehaviour {
 /// </summary>
 public abstract class Generate : GenerateBase {
     public abstract override void GenerateLevel();
+
+    void Start()
+    {
+        GameState.Instance.StartState();
+        int x, y;
+        GenerateLevel();
+        FindRandomEmpty(out x, out y);
+        map[x, y].TileNumber = 2;
+        this.startPoint = new Point(x, y);
+        FindRandomEmpty(out x, out y);
+        map[x, y].TileNumber = 3;
+        this.endPoint = new Point(x, y);
+        BuildLevel();
+        GameState.Instance.Map = this;
+        GameState.Instance.Character.Player.transform.position = new Vector2(GameState.Instance.Map.startPoint.x, GameState.Instance.Map.startPoint.y);
+    }
 }
