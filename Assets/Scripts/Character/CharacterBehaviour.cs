@@ -15,8 +15,18 @@ public class CharacterBehaviour : MonoBehaviour {
             if (hit.collider != null)
             {
                 Entity entity = (Entity)hit.collider.gameObject.GetComponent(typeof(Entity));
-                entity.Hit(GameState.Instance.Character.Damage);
-                GameState.Instance.Turn -= 100;
+                if (entity != null)
+                {
+                    entity.Hit(GameState.Instance.Character.Damage);
+                    GameState.Instance.Turn -= 100;
+                    return;
+                }
+            }
+
+            if (moving && GameState.Instance.Map.map[(int)(transform.position.x + dir.x), (int)(transform.position.y + dir.y)].TileNumber == 3)
+            {
+                GameState.Instance.NextLevel<Caves>(GameState.Instance.Map.Hardness * 2.5f);
+                return;
             }
             else if (moving && GameState.Instance.Map.Obstacles.IndexOf(GameState.Instance.Map.map[(int)(transform.position.x + dir.x), (int)(transform.position.y + dir.y)].TileNumber) == -1)
             {
@@ -70,5 +80,6 @@ public class CharacterBehaviour : MonoBehaviour {
 #if DEBUG
         Debug.Log("Oh dear you died.");
 #endif
+        Application.Quit();
     }
 }

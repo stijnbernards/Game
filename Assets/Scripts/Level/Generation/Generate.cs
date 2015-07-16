@@ -2,27 +2,26 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class GenerateBase : MonoBehaviour {
+public class GenerateBase {
 
-    public int width;
-    public int height;
+    public int width = 100;
+    public int height = 100;
     [Range(0, 100)]
-    public int randomFillPercent;
+    public int randomFillPercent = 50;
+    public float Hardness;
 
     public string seed;
 
-    public GameObject startSprite;
-    public GameObject endSprite;
+    public GameObject startSprite = Resources.Load("StartPoint") as GameObject;
+    public GameObject endSprite = Resources.Load("EndPoint") as GameObject;
 
-    [HideInInspector]
     public List<GameObject> entitys = new List<GameObject>();
-    [HideInInspector]
+
     public Tile[,] map;
-    [HideInInspector]
+
     public Point startPoint;
-    [HideInInspector]
     public Point endPoint;
-    [HideInInspector]
+
     public List<int> Obstacles = new List<int>();
 
     public void FindRandomEmpty(out int x, out int y)
@@ -39,6 +38,7 @@ public class GenerateBase : MonoBehaviour {
     public virtual void GenerateLevel() { }
     public virtual void BuildLevel() { }
     public virtual void SpawnEntitys() { }
+    public virtual void StartGen(float Level) { }
 }
 
 /// <summary>
@@ -47,9 +47,11 @@ public class GenerateBase : MonoBehaviour {
 public abstract class Generate : GenerateBase {
     public abstract override void GenerateLevel();
 
-    void Start()
+    public override void StartGen(float level)
     {
-        GameState.Instance.StartState();
+        GameState.Instance.Map = this;
+        this.Hardness = level;
+        UIMain.SetLevel();
         int x, y;
         GenerateLevel();
         FindRandomEmpty(out x, out y);
@@ -59,7 +61,6 @@ public abstract class Generate : GenerateBase {
         map[x, y].TileNumber = 3;
         this.endPoint = new Point(x, y);
         BuildLevel();
-        GameState.Instance.Map = this;
         GameState.Instance.Character.Player.transform.position = new Vector2(GameState.Instance.Map.startPoint.x, GameState.Instance.Map.startPoint.y);
     }
 }

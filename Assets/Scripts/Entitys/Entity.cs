@@ -50,7 +50,7 @@ public class Entity : MonoBehaviour{
     {
         this.Health -= dmg;
 #if DEBUG
-        Debug.Log("Hit "+ this.name +" for "+ dmg +" DMG HP LEFT:"+ this.health);
+        //Debug.Log("Hit "+ this.name +" for "+ dmg +" DMG HP LEFT:"+ this.health);
 #endif
     }
 

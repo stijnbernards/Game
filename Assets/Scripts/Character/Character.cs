@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -36,9 +37,9 @@ public class Character
     }
     public float MoveSpeed = 1f;
     public float AttackSpeed = 1f;
-    public float HealthRegen = 0.8f;
-    public float MaxHealth = 10f;
-    public float Damage = 15f;
+    public float HealthRegen = 100f;
+    public float MaxHealth = 1000f;
+    public float Damage = 200f;
     public float Health
     {
         get
@@ -48,6 +49,7 @@ public class Character
         set
         {
             this.health = value;
+            UIMain.SetHealth();
             if (this.health <= 0)
             {
                 CharacterBehaviour Char = (CharacterBehaviour)(this.player.GetComponent(typeof(CharacterBehaviour)));
@@ -59,7 +61,7 @@ public class Character
     }
     #endregion
 
-    private float health = 100;
+    private float health;
 
     private Class charClass;
     private Race charRace;
@@ -69,6 +71,8 @@ public class Character
 
     public Character(Class cClass, Race cRace)
     {
+        GameState.Instance.Character = this;
+        this.Health = 1000f;
         //Assign character race + class
         this.charClass = cClass;
         this.charRace = cRace;
@@ -84,7 +88,7 @@ public class Character
     public void Hit(float amount)
     {
 #if DEBUG
-        Debug.Log("Hit player for " + amount + " DMG HP LEFT:" + this.health);
+        //Debug.Log("Hit player for " + amount + " DMG HP LEFT:" + this.health);
 #endif
         this.Health -= amount;
     }
@@ -92,8 +96,5 @@ public class Character
     public void CharUpdate()
     {
         this.Health += HealthRegen;
-#if DEBUG
-        Debug.Log("Character hp: " + this.Health);
-#endif
     }
 }

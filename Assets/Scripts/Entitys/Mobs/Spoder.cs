@@ -8,8 +8,8 @@ public class Spoder : Entity {
     public override void Instantiate()
     {
         base.Instantiate();
-
-        this.Damage = Random.Range(1, 3);
-        this.Health = Random.Range(10, 50);
+        float hard = GameState.Instance.Map.Hardness;
+        this.Damage = Random.Range(hard, hard + 5);
+        this.Health = Random.Range(hard + 10, hard + 40);
     }
 }

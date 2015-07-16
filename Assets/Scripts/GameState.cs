@@ -7,6 +7,8 @@ public class GameState : MonoBehaviour
     #region Properties
     public Generate Map;
 
+    public float Level = 1;
+
     public double Turn
     {
         get
@@ -60,7 +62,7 @@ public class GameState : MonoBehaviour
 
     public void StartState()
     {
-        this.Character = new Character(new Rogue(), new Halfling());
+        new Character(new Rogue(), new Halfling());
         //Disabled for debugging purposes
         //Application.LoadLevel("Game");
     }
@@ -75,5 +77,19 @@ public class GameState : MonoBehaviour
                 mob.Action();
             }
         }
+    }
+
+    public void NextLevel<T>(float Hardness) where T : GenerateBase, new()
+    {
+        Destroy(GameObject.Find("Map"));
+        foreach (GameObject ent in GameState.instance.Map.entitys)
+        {
+            Destroy(ent);
+        }
+        this.Level++;
+
+        Debug.Log("Entered level " + Hardness);
+        UIMain.SetLevel() ;
+        new T().StartGen(Hardness);
     }
 }

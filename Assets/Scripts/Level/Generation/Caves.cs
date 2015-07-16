@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 public class Caves : Generate{
 
-    public GameObject groundSprite;
-    public GameObject wallSprite;
-    public int smoothing;
+    public GameObject groundSprite = Resources.Load("Ground") as GameObject;
+    public GameObject wallSprite = Resources.Load("Stone") as GameObject;
+    public int smoothing = 4;
 
     public List<EntityItem> EntityList = new List<EntityItem>()
     {
@@ -200,6 +200,7 @@ public class Caves : Generate{
     /// </summary>
     public override void BuildLevel()
     {
+        GameObject parent = new GameObject("Map");
         if (map != null)
         {
             for (int x = 0; x < width; x++)
@@ -223,6 +224,7 @@ public class Caves : Generate{
                     }
 
                     tile.transform.position = offset;
+                    tile.transform.parent = parent.transform;
                 }
             }
         }
