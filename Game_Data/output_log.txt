@@ -16,7 +16,7 @@ Platform assembly: C:\Users\Stijn\Documents\GitHub\Game\Game_Data\Managed\UnityE
 Loading C:\Users\Stijn\Documents\GitHub\Game\Game_Data\Managed\UnityEngine.Networking.dll into Unity Child Domain
 Platform assembly: C:\Users\Stijn\Documents\GitHub\Game\Game_Data\Managed\UnityEngine.Analytics.dll (this message is harmless)
 Loading C:\Users\Stijn\Documents\GitHub\Game\Game_Data\Managed\UnityEngine.Analytics.dll into Unity Child Domain
-- Completed reload, in  0.148 seconds
+- Completed reload, in  0.147 seconds
 desktop: 1920x1080 60Hz; virtual: 3200x1080 at -1280,0
 <RI> Initializing input.
 <RI> Input initialized.
@@ -24,42 +24,12 @@ desktop: 1920x1080 60Hz; virtual: 3200x1080 at -1280,0
 Platform assembly: C:\Users\Stijn\Documents\GitHub\Game\Game_Data\Managed\System.Core.dll (this message is harmless)
 Platform assembly: C:\Users\Stijn\Documents\GitHub\Game\Game_Data\Managed\System.dll (this message is harmless)
 Unloading 2 Unused Serialized files (Serialized files now loaded: 0)
-UnloadTime: 0.507466 ms
+UnloadTime: 0.462488 ms
 
 Unloading 2 unused Assets to reduce memory usage. Loaded Objects now: 204.
-Total: 0.325600 ms (FindLiveObjects: 0.023955 ms CreateObjectMapping: 0.020533 ms MarkObjects: 0.265466 ms  DeleteObjects: 0.007333 ms)
+Total: 0.293333 ms (FindLiveObjects: 0.027377 ms CreateObjectMapping: 0.038622 ms MarkObjects: 0.209244 ms  DeleteObjects: 0.008311 ms)
 
 Entered level 2.5
  
 (Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
-
-Entered level 6.25
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
-
-Entered level 15.625
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
-
-Entered level 39.0625
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
-
-Entered level 97.65625
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
-
-Entered level 244.1406
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
-
-Entered level 610.3516
- 
-(Filename: C:/buildslave/unity/build/artifacts/generated/common/runtime/UnityEngineDebugBindings.gen.cpp Line: 65)
-
-NullReferenceException
-  at (wrapper managed-to-native) UnityEngine.GameObject:get_transform ()
-  at Cam.LateUpdate () [0x00000] in <filename unknown>:0 
- 
-(Filename:  Line: -1)
 

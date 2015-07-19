@@ -9,6 +9,7 @@ public class Entity : MonoBehaviour{
     public float Attackspeed;
     public float Defence;
     public float Damage;
+    public float Exp;
     public float LOS;
     public float Health
     {
