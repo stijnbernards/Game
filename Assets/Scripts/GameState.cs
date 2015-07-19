@@ -23,7 +23,7 @@ public class GameState : MonoBehaviour
                 //TODO: NPC handler stuff...
                 NPCHandler();
                 GameState.Instance.Character.CharUpdate();
-                this.turn = 100 - this.turn;
+                this.turn += 100;
             }
 
         }

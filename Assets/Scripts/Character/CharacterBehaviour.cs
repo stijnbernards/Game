@@ -18,21 +18,21 @@ public class CharacterBehaviour : MonoBehaviour {
                 if (entity != null)
                 {
                     entity.Hit(GameState.Instance.Character.Damage);
-                    GameState.Instance.Turn -= 100;
+                    GameState.Instance.Turn -= 100f / GameState.Instance.Character.AttackSpeed;
                     return;
                 }
             }
 
             if (moving && GameState.Instance.Map.map[(int)(transform.position.x + dir.x), (int)(transform.position.y + dir.y)].TileNumber == 3)
             {
-                GameState.Instance.NextLevel<Caves>(GameState.Instance.Map.Hardness * 2.5f);
+                GameState.Instance.NextLevel<Caves>(GameState.Instance.Map.Hardness++);
                 return;
             }
             else if (moving && GameState.Instance.Map.Obstacles.IndexOf(GameState.Instance.Map.map[(int)(transform.position.x + dir.x), (int)(transform.position.y + dir.y)].TileNumber) == -1)
             {
                 transform.position += dir;
                 moving = false;
-                GameState.Instance.Turn -= 100;
+                GameState.Instance.Turn -= 100f / GameState.Instance.Character.MoveSpeed;
             }
             else
             {

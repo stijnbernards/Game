@@ -5,7 +5,7 @@ using System.Collections;
 public class UIMain {
 
     public static void SetHealth(){
-        GameObject.Find("Health").GetComponent<Text>().text = "Health: " + GameState.Instance.Character.Health.ToString("N0");
+        GameObject.Find("Health").GetComponent<Text>().text = "Health: " + GameState.Instance.Character.Health.ToString("N0") + " / " + GameState.Instance.Character.MaxHealth.ToString("N0");
     }
 
     public static void SetLevel()

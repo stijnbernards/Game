@@ -82,7 +82,7 @@ public class Entity : MonoBehaviour{
             else if (rad.y < 0)
                 dir += Vector3.down;
 
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, 2f);
+            RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, 1f);
             if (hit.collider != null)
                 if (hit.collider.gameObject.GetComponent(typeof(CharacterBehaviour)) != null)
                     GameState.Instance.Character.Hit(Damage);

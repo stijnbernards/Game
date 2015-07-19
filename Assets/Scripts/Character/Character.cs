@@ -200,7 +200,7 @@ public class CharacterStats
     {
         get
         {
-            return this.Dexterity + 1f;
+            return (this.Dexterity / 100f) + 1f;
         }
     }
 
@@ -208,7 +208,7 @@ public class CharacterStats
     {
         get
         {
-            return this.Dexterity + 1f;
+            return (this.Dexterity / 100f) + 1f;
         }
     }
     public float HealthRegen
