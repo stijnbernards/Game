@@ -64,6 +64,7 @@
      <Compile Include="Assets\Scripts\Level\LevelStart.cs" />
      <Compile Include="Assets\Scripts\Level\Tile.cs" />
      <Compile Include="Assets\Scripts\Menu\CreateCharacter.cs" />
+     <Compile Include="Assets\Scripts\Menu\SkillMenu.cs" />
      <Compile Include="Assets\Scripts\UI\UIMain.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Users/Stijn/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

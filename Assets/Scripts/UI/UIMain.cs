@@ -12,4 +12,14 @@ public class UIMain {
     {
         GameObject.Find("Level").GetComponent<Text>().text = "Level: " + GameState.Instance.Level;
     }
+
+    public static void SetExp()
+    {
+        GameObject.Find("Exp").GetComponent<Text>().text = "Experience: " + Mathf.Round(GameState.Instance.Character.Exp);
+    }
+
+    public static void SetCharLevel()
+    {
+        GameObject.Find("CharacterLevel").GetComponent<Text>().text = "Level: " + GameState.Instance.Character.Level;
+    }
 }

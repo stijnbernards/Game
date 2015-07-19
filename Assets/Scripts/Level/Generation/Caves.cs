@@ -57,7 +57,8 @@ public class Caves : Generate{
                         TileNumber = 1
                     };
                 else
-                    map[x, y] = new Tile(){
+                    map[x, y] = new Tile()
+                    {
                         TileNumber = (rng.Next(0, 100) < randomFillPercent) ? 1 : 0
                     };
             }

@@ -44,6 +44,27 @@ public class CharacterBehaviour : MonoBehaviour {
 
     bool CheckInput()
     {
+        if (Input.GetKeyDown(KeyCode.Space)){
+            GameState.Instance.Character.DebugLog();
+            return false;
+        }
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            GameObject UI = GameObject.Find("LevelUI") as GameObject;
+            if (UI != null)
+            {
+                Destroy(UI);
+            }
+            else
+            {
+                GameObject go = (GameObject)(GameObject.Instantiate(Resources.Load("LevelUI"), new Vector3(0, 0, 0), Quaternion.identity));
+                go.transform.SetParent(GameObject.Find("Canvas").transform, false);
+                go.name = "LevelUI";
+            }
+            return false;
+        }
+
         if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
         {
             dir = Vector2.right;

@@ -57,6 +57,7 @@ public class Entity : MonoBehaviour{
 
     public void Kill()
     {
+        GameState.Instance.Character.Exp += Exp;
         Destroy(gameObject);
     }
 

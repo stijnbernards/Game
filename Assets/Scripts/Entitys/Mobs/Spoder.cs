@@ -11,5 +11,6 @@ public class Spoder : Entity {
         float hard = GameState.Instance.Map.Hardness;
         this.Damage = Random.Range(hard, hard + 5);
         this.Health = Random.Range(hard + 10, hard + 40);
+        this.Exp = Random.Range(hard + 20, hard + 40);
     }
 }
