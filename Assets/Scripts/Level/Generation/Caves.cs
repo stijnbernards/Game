@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Caves : Generate{
+public class Caves : Generate {
 
     public GameObject groundSprite = Resources.Load("Ground") as GameObject;
     public GameObject wallSprite = Resources.Load("Stone") as GameObject;
