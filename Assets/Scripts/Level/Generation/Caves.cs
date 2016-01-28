@@ -202,14 +202,15 @@ public class Caves : Generate {
     public override void BuildLevel()
     {
         GameObject parent = new GameObject("Map");
+        GameObject tile = null;
+        Vector3 offset = new Vector3();
         if (map != null)
         {
             for (int x = 0; x < width; x++)
             {
                 for (int y = 0; y < height; y++)
                 {
-                    Vector3 offset = new Vector3(x, y, 0f);
-                    GameObject tile;
+                    offset = new Vector3(x, y, 0f);
 
                     if (map[x, y].TileNumber == 1)
                         tile = GameObject.Instantiate(wallSprite, offset, Quaternion.identity) as GameObject;

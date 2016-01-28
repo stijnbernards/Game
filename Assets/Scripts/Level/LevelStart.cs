@@ -6,7 +6,9 @@ public class LevelStart : MonoBehaviour {
 	void Start () 
     {
         GameState.Instance.StartState();
-        new Caves().StartGen(1);
+        //new Caves().StartGen(1);
+        //new CaveRooms().StartGen(1);
+        new Forest().GenerateLevel();
 	}
 	
 	// Update is called once per frame
