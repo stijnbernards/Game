@@ -2,6 +2,7 @@
 using System.Collections;
 
 public abstract class Race {
+
     public string RaceName
     {
         get

@@ -3,6 +3,7 @@ using System.Collections;
 
 public class Class {
     public float SkillPoints;
+
     public string ClassName
     {
         get

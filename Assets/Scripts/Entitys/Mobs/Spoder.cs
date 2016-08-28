@@ -2,8 +2,6 @@
 using System.Collections;
 
 public class Spoder : Entity {
-    //Used for declaring of stuff
-    public static string Name = "Spoder";
 
     public override void Instantiate()
     {

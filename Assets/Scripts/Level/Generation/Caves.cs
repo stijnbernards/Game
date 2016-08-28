@@ -6,12 +6,65 @@ public class Caves : Generate {
 
     public GameObject groundSprite = Resources.Load("Ground") as GameObject;
     public GameObject wallSprite = Resources.Load("Stone") as GameObject;
-    public int smoothing = 4;
+    public int smoothing = 1;
 
     public List<EntityItem> EntityList = new List<EntityItem>()
     {
-        new EntityItem(Spoder.Name, 23),
+        new EntityItem("Spoder", 23),
     };
+
+    public override void BeginPoint()
+    {
+        int x, y;
+
+        if (this.Level != 0)
+        {
+            FindRandomEmpty(out x, out y);
+            map[x, y].TileNumber = 8;
+            map[x, y].Name = "starttile";
+            map[x, y].Action = new Tile.TileAction(() =>
+            {
+                GameState.Instance.Character.Behaviour.SetMoving(false);
+                GameState.Instance.GetLevel<Caves>(Hardness, (int)Level - 1, this.ID, true);
+            });
+            this.startPoint = new Point(x, y);
+        }
+        else
+        {
+            FindRandomEmpty(out x, out y);
+
+            map[x, y].TileNumber = 8;
+            map[x, y].Name = "starttile";
+            map[x, y].Action = new Tile.TileAction(() =>
+            {
+                GameState.Instance.Character.Behaviour.SetMoving(false);
+                GameState.Instance.GetLevel<Caves>(Hardness, 0, "DEBUG_LEVEL", true);
+            });
+
+            this.startPoint = new Point(x, y);
+        }
+    }
+
+    public override void EndPoint()
+    {
+        int x, y;
+
+        if (this.Level + 1 < GameState.Instance.LevelRegistry.LevelCount(this.ID))
+        {
+            FindRandomEmpty(out x, out y);
+
+            map[x, y].Action = new Tile.TileAction(() =>
+            {
+                GameState.Instance.Character.Behaviour.SetMoving(false);
+                GameState.Instance.GetLevel<Caves>(Hardness, (int)Level + 1, this.ID, false);
+            });
+
+            map[x, y].TileNumber = 9;
+            map[x, y].Name = "endtile";
+
+            this.endPoint = new Point(x, y);
+        }
+    }
 
     //Speaks for itself...
     public override void GenerateLevel()
@@ -95,7 +148,8 @@ public class Caves : Generate {
             else if(nWallTiles < 2)
                 return 0;
         }
-        else{
+        else
+        {
             if(nWallTiles >= 5)
                 return 1;
         }
@@ -201,35 +255,7 @@ public class Caves : Generate {
     /// </summary>
     public override void BuildLevel()
     {
-        GameObject parent = new GameObject("Map");
-        GameObject tile = null;
-        Vector3 offset = new Vector3();
-        if (map != null)
-        {
-            for (int x = 0; x < width; x++)
-            {
-                for (int y = 0; y < height; y++)
-                {
-                    offset = new Vector3(x, y, 0f);
-
-                    if (map[x, y].TileNumber == 1)
-                        tile = GameObject.Instantiate(wallSprite, offset, Quaternion.identity) as GameObject;
-                    else if(map[x, y].TileNumber == 0)
-                        tile = GameObject.Instantiate(groundSprite, offset, Quaternion.identity) as GameObject;
-                    else if(map[x, y].TileNumber == 2)
-                    {
-                        tile = GameObject.Instantiate(startSprite, offset, Quaternion.identity) as GameObject;
-                    }
-                    else
-                    {
-                        tile = GameObject.Instantiate(endSprite, offset, Quaternion.identity) as GameObject;
-                    }
-
-                    tile.transform.position = offset;
-                    tile.transform.parent = parent.transform;
-                }
-            }
-        }
+        GameState.Instance.MapRenderer.DispatchMap(map);
     }
 
     public override void SpawnEntitys()
@@ -241,7 +267,7 @@ public class Caves : Generate {
             for (int i = 0; i < ei.Amount; i++)
             {
                 FindRandomEmpty(out x, out y);
-                this.entitys.Add(Spoder.SpawnInWorld(new Vector2(x, y), (GameObject)Resources.Load(ei.Ent)));
+                this.entities.Add(Entity.SpawnInWorld(new Vector2(x, y), GameState.Instance.EntityRegistry.GetEntity(ei.Ent)));
             }
         }
     }

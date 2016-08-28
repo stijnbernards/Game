@@ -2,9 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Entity : MonoBehaviour{
+public partial class Entity : MonoBehaviour 
+{
 
-    #region Stats 
+    #region Stats
+    public bool Physical = true;
     public float Movespeed;
     public float Attackspeed;
     public float Defence;
@@ -33,21 +35,12 @@ public class Entity : MonoBehaviour{
         this.LOS = 10;
     }
 
-    public static GameObject SpawnInWorld(Vector2 pos, GameObject sprite)
-    {
-        GameObject go = GameObject.Instantiate(sprite, pos, Quaternion.identity) as GameObject;
-        Entity entity = (Entity)go.GetComponent(typeof(Entity));
-        entity.Instantiate();
-
-        return go;
-    }
-
     public void MoveTo(float x, float y)
     {
         transform.position = new Vector2(x, y);
     }
 
-    public void Hit(float dmg)
+    public virtual void Hit(float dmg)
     {
         this.Health -= dmg;
 #if DEBUG
@@ -85,12 +78,22 @@ public class Entity : MonoBehaviour{
             RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, 1f);
             if (hit.collider != null)
                 if (hit.collider.gameObject.GetComponent(typeof(CharacterBehaviour)) != null)
-                    GameState.Instance.Character.Hit(Damage);
+                    GameState.Instance.Character.Hit(Damage, name);
                 else
                     FindSpot(dir);
             else
                 transform.position += dir;
         }
+    }
+
+    public virtual void Interact()
+    {
+
+    }
+
+    public virtual void Step()
+    {
+
     }
 
     private void FindSpot(Vector3 dir)
@@ -101,12 +104,12 @@ public class Entity : MonoBehaviour{
 
 public struct EntityItem
 {
-    public string Ent { get; set; }
-    public int Amount { get; set; }
+    public string Ent;
+    public int Amount;
 
     public EntityItem(string ent, int amount)
     {
-        this.Ent = ent;
-        this.Amount = amount;
+        Ent = ent;
+        Amount = amount;
     }
 }

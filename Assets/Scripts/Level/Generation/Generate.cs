@@ -9,13 +9,16 @@ public class GenerateBase {
     [Range(0, 100)]
     public int randomFillPercent = 50;
     public float Hardness;
+    public float Level;
+    public string ID;
+    public Vector2 LastPos;
 
     public string seed;
 
     public GameObject startSprite = Resources.Load("StartPoint") as GameObject;
     public GameObject endSprite = Resources.Load("EndPoint") as GameObject;
 
-    public List<GameObject> entitys = new List<GameObject>();
+    public List<GameObject> entities = new List<GameObject>();
 
     public Tile[,] map;
 
@@ -38,29 +41,61 @@ public class GenerateBase {
     public virtual void GenerateLevel() { }
     public virtual void BuildLevel() { }
     public virtual void SpawnEntitys() { }
-    public virtual void StartGen(float Level) { }
+    public virtual Generate StartGen(float level, string id) { return null; }
 }
 
 /// <summary>
 /// Abstract class to enforce derived classes to implement the abstract function GenerateLevel
 /// </summary>
 public abstract class Generate : GenerateBase {
+
     public abstract override void GenerateLevel();
 
-    public override void StartGen(float level)
+    public override Generate StartGen(float level, string id)
     {
+        this.ID = id;
         GameState.Instance.Map = this;
         this.Hardness = level;
+        this.Level = level;
         UIMain.SetLevel();
-        int x, y;
         GenerateLevel();
-        FindRandomEmpty(out x, out y);
-        map[x, y].TileNumber = 2;
-        this.startPoint = new Point(x, y);
-        FindRandomEmpty(out x, out y);
-        map[x, y].TileNumber = 3;
-        this.endPoint = new Point(x, y);
+        BeginPoint();
+        EndPoint();
         BuildLevel();
-        GameState.Instance.Character.Player.transform.position = new Vector2(GameState.Instance.Map.startPoint.x, GameState.Instance.Map.startPoint.y);
+        //GameState.Instance.Character.Player.transform.position = new Vector2(GameState.Instance.Map.startPoint.x, GameState.Instance.Map.startPoint.y);
+
+        return this;
+    }
+
+    //int x, y;
+    //FindRandomEmpty(out x, out y);
+    //map[x, y].TileNumber = 2;
+    //this.startPoint = new Point(x, y);
+    public abstract void BeginPoint();
+
+    //int x, y;
+    //FindRandomEmpty(out x, out y);
+    //map[x, y].TileNumber = 3;
+    //this.endPoint = new Point(x, y);
+    public abstract void EndPoint();
+
+    public void ContinueLevel(bool start)
+    {
+        BuildLevel();
+
+        GameState.Instance.Map = this;
+
+        if (start)
+        {
+            GameState.Instance.Character.Player.transform.position = LastPos;
+
+            return;
+        }
+        else
+        {
+            GameState.Instance.Character.Player.transform.position = new Vector2(this.startPoint.x, this.startPoint.y);
+
+            return;
+        }
     }
 }

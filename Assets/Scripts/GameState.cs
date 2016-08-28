@@ -6,6 +6,10 @@ public class GameState : MonoBehaviour
 
     #region Properties
     public Generate Map;
+    public MapRenderer MapRenderer;
+
+    public EntityRegistry EntityRegistry;
+    public LevelRegistry LevelRegistry;
 
     public float Level = 1;
 
@@ -62,14 +66,19 @@ public class GameState : MonoBehaviour
 
     public void StartState()
     {
+        EntityRegistry = new EntityRegistry();
+        LevelRegistry = new LevelRegistry();
+
+        EntityRegistry.RegisterEntity("Spoder", Resources.Load("Spoder") as GameObject);
         new Character(new Rogue(), new Halfling());
+        MapRenderer = new MapRenderer();
         //Disabled for debugging purposes
         //Application.LoadLevel("Game");
     }
 
     private void NPCHandler()
     {
-        foreach (GameObject ent in GameState.Instance.Map.entitys)
+        foreach (GameObject ent in GameState.Instance.Map.entities)
         {
             if (ent != null)
             {
@@ -79,17 +88,49 @@ public class GameState : MonoBehaviour
         }
     }
 
-    public void NextLevel<T>(float Hardness) where T : GenerateBase, new()
+    public void GetLevel<T>(float Hardness, int level, string identifier, bool end) where T : Generate, new()
     {
         Destroy(GameObject.Find("Map"));
-        foreach (GameObject ent in GameState.instance.Map.entitys)
-        {
-            Destroy(ent);
-        }
-        this.Level++;
 
-        Debug.Log("Entered level " + Hardness);
-        UIMain.SetLevel() ;
-        new T().StartGen(Hardness);
+        if (GameState.instance.Map != null)
+        {
+            foreach (GameObject ent in GameState.instance.Map.entities)
+            {
+                Destroy(ent);
+            }
+        }
+
+        if (LevelRegistry.LevelExists(identifier))
+        {
+            LevelRegistry.GetMap(identifier, level).ContinueLevel(end);
+        }
+        else
+        {
+            LevelRegistry.AddLevels<T>(identifier, level);
+            LevelRegistry.GetMap(identifier, 0).ContinueLevel(end);
+        }
+
+
+        //UIMain.GameLog("Entered level " + Hardness);
+        //UIMain.SetLevel() ;
+        //new T().StartGen(Hardness);
+    }
+
+    //public void EnterLevel<T>(float Hardness, float levels, string identifier) where T : GenerateBase, new()
+    //{
+    //    Destroy(GameObject.Find("Map"));
+
+    //    foreach (GameObject ent in GameState.instance.Map.entities)
+    //    {
+    //        Destroy(ent);
+    //    }
+
+    //    UIMain.GameLog("Entered level " + identifier);
+    //    new T().StartGen(Hardness, levels);
+    //}
+
+    public void DestroyObject(GameObject obj)
+    {
+        Destroy(obj);
     }
 }

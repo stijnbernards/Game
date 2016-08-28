@@ -6,6 +6,14 @@ using System.Collections.Generic;
 //Separated from Entity's bcuz stuff
 public class Character : CharacterStats
 {
+    public CharacterBehaviour Behaviour
+    {
+        get
+        {
+            return Player.GetComponent<CharacterBehaviour>();
+        }
+    }
+
     public GameObject Player
     {
         get
@@ -84,12 +92,13 @@ public class Character : CharacterStats
         this.CharClass.Init();
     }
 
-    public void Hit(float amount)
+    public void Hit(float amount, string name)
     {
 #if DEBUG
         //Debug.Log("Hit player for " + amount + " DMG HP LEFT:" + this.health);
 #endif
         this.Health -= amount;
+        UIMain.SetChat("You've been hit for: " + amount + " by: " + name);
     }
 
     public void CharUpdate()
@@ -232,8 +241,17 @@ public class CharacterStats
             return this.Strength + 10;
         }
     }
+
+    public float LOS
+    {
+        get
+        {
+            return this.los;
+        }
+    }
     #endregion
 
+    private float los = 5;
     private float exp;
     private float level = 1;
     private float expToLevel

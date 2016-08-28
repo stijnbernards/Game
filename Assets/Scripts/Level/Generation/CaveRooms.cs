@@ -9,11 +9,64 @@ public class CaveRooms : Generate
 
     private List<Vector2[]> rooms = new List<Vector2[]>();
 
+    public override void BeginPoint()
+    {
+        int x, y;
+
+        if (this.Level != 0)
+        {
+            FindRandomEmpty(out x, out y);
+            map[x, y].TileNumber = 8;
+            map[x, y].Name = "starttile";
+            map[x, y].Action = new Tile.TileAction(() =>
+            {
+                GameState.Instance.Character.Behaviour.SetMoving(false);
+                GameState.Instance.GetLevel<Caves>(Hardness, (int)Level - 1, this.ID, true);
+            });
+            this.startPoint = new Point(x, y);
+        }
+        else
+        {
+            FindRandomEmpty(out x, out y);
+
+            map[x, y].TileNumber = 8;
+            map[x, y].Name = "starttile";
+            map[x, y].Action = new Tile.TileAction(() =>
+            {
+                GameState.Instance.Character.Behaviour.SetMoving(false);
+                GameState.Instance.GetLevel<Caves>(Hardness, 0, "DEBUG_LEVEL", true);
+            });
+
+            this.startPoint = new Point(x, y);
+        }
+    }
+
+    public override void EndPoint()
+    {
+        int x, y;
+
+        if (this.Level + 1 < GameState.Instance.LevelRegistry.LevelCount(this.ID))
+        {
+            FindRandomEmpty(out x, out y);
+
+            map[x, y].Action = new Tile.TileAction(() =>
+            {
+                GameState.Instance.Character.Behaviour.SetMoving(false);
+                GameState.Instance.GetLevel<Caves>(Hardness, (int)Level + 1, this.ID, false);
+            });
+
+            map[x, y].TileNumber = 9;
+            map[x, y].Name = "endtile";
+
+            this.endPoint = new Point(x, y);
+        }
+    }
+
     public override void GenerateLevel()
     {
-        int randX, 
-            randY, 
-            iter1 = 0, 
+        int randX,
+            randY,
+            iter1 = 0,
             iter2 = 0;
 
         map = new Tile[width, height];
@@ -94,6 +147,7 @@ public class CaveRooms : Generate
                 placeholder = GenHelpers.GenerateBetween(new Vector2(0, calc), new Vector2(calc, calc * 4));
                 points4.Add(placeholder);
             }
+
             iter++;
         }
 
@@ -103,9 +157,11 @@ public class CaveRooms : Generate
         points.AddRange(points4.OrderByDescending(x => x.y));
 
         for (int x = 0; x < points.Count - 1; x++)
-            GenHelpers.PlotLine((int)points[x].x, (int)points[x].y, (int)points[x + 1].x, (int)points[x + 1].y).ToList<Vector2>().ForEach(y => { returnPoints.Add(y); });
+        {
+            GenHelpers.PlotLine(points[x].x, points[x].y, points[x + 1].x, points[x + 1].y).ToList<Vector2>().ForEach(y => { returnPoints.Add(y); });
+        }
 
-        GenHelpers.PlotLine((int)points[points.Count - 1].x, (int)points[points.Count - 1].y, (int)points[0].x, (int)points[0].y).ToList<Vector2>().ForEach(y => { returnPoints.Add(y); });
+        GenHelpers.PlotLine(points[points.Count - 1].x, points[points.Count - 1].y, points[0].x, points[0].y).ToList<Vector2>().ForEach(y => { returnPoints.Add(y); });
 
 
         FloodFillRoom(ref returnPoints, width / 4);
@@ -160,15 +216,21 @@ public class CaveRooms : Generate
 
             //while(roomsDone.Contains(random))
                 //random = Mathf.RoundToInt(Random.Range(0, rooms.Count - 1));
+            try
+            {
+                roads.AddRange(
+                    BuildRoadBetween(
+                        rooms[roomsDone.Last()][Mathf.RoundToInt(Random.Range(0, rooms[roomsDone.Last()].Length - 1))],
+                        rooms[random][Mathf.RoundToInt(Random.Range(0, rooms[roomsDone.Last()].Length - 1))]
+                    )
+                );
 
-            roads.AddRange(
-                BuildRoadBetween(
-                    rooms[roomsDone.Last()][Mathf.RoundToInt(Random.Range(0, rooms[roomsDone.Last()].Length - 1))], 
-                    rooms[random][Mathf.RoundToInt(Random.Range(0, rooms[roomsDone.Last()].Length - 1))]
-                )
-            );
-            
-            roomsDone.Add(random);
+                roomsDone.Add(random);
+            }
+            catch (System.Exception e)
+            {
+
+            }
         }
 
         return roads.ToArray();
@@ -178,39 +240,41 @@ public class CaveRooms : Generate
     {
         List<Vector2> road = new List<Vector2>();
 
-        GenHelpers.PlotLine((int)p0.x, (int)p0.y, (int)p1.x, (int)p1.y).ToList<Vector2>().ForEach(y => { road.Add(y); });
+        GenHelpers.PlotLine(p0.x, p0.y, p1.x, p1.y).ToList<Vector2>().ForEach(y => { road.Add(y); });
 
         return road.ToArray();
     }
 
     public override void BuildLevel()
     {
-        GameObject parent = new GameObject("Map");
-        GameObject tile = null;
-        Vector3 offset = new Vector3();
+        //GameObject parent = new GameObject("Map");
+        //GameObject tile = null;
+        //Vector3 offset = new Vector3();
 
-        if (map != null)
-        {
-            for (int x = 0; x < width; x++)
-            {
-                for (int y = 0; y < height; y++)
-                {
-                    offset = new Vector3(x, y, 0f);
+        //if (map != null)
+        //{
+        //    for (int x = 0; x < width; x++)
+        //    {
+        //        for (int y = 0; y < height; y++)
+        //        {
+        //            offset = new Vector3(x, y, 0f);
 
-                    if (map[x, y].TileNumber == 1)
-                        tile = GameObject.Instantiate(wallSprite, offset, Quaternion.identity) as GameObject;
-                    else if (map[x, y].TileNumber == 0)
-                        tile = GameObject.Instantiate(groundSprite, offset, Quaternion.identity) as GameObject;
-                    else if (map[x, y].TileNumber == 2)
-                        tile = GameObject.Instantiate(startSprite, offset, Quaternion.identity) as GameObject;
-                    else
-                        tile = GameObject.Instantiate(endSprite, offset, Quaternion.identity) as GameObject;
+        //            if (map[x, y].TileNumber == 1)
+        //                tile = GameObject.Instantiate(wallSprite, offset, Quaternion.identity) as GameObject;
+        //            else if (map[x, y].TileNumber == 0)
+        //                tile = GameObject.Instantiate(groundSprite, offset, Quaternion.identity) as GameObject;
+        //            else if (map[x, y].TileNumber == 2)
+        //                tile = GameObject.Instantiate(startSprite, offset, Quaternion.identity) as GameObject;
+        //            else
+        //                tile = GameObject.Instantiate(endSprite, offset, Quaternion.identity) as GameObject;
 
-                    tile.transform.position = offset;
-                    tile.transform.parent = parent.transform;
-                }
-            }
-        }
+        //            tile.transform.position = offset;
+        //            tile.transform.parent = parent.transform;
+        //        }
+        //    }
+        //}
+
+        GameState.Instance.MapRenderer.DispatchMap(map);
     }
 
     private void FloodFillRoom(ref List<Vector2> roomBounds, int height)

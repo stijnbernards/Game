@@ -8,8 +8,9 @@ public class LevelStart : MonoBehaviour {
         GameState.Instance.StartState();
         //new Caves().StartGen(1);
         //new CaveRooms().StartGen(1);
-        new Forest().GenerateLevel();
-	}
+        //new MainIsland().StartGen(1);
+        GameState.Instance.GetLevel<DebugLevel>(1, 1, "DEBUG_LEVEL", false);
+    }
 	
 	// Update is called once per frame
 	void Update () 
