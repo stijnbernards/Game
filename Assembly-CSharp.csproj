@@ -47,7 +47,8 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\Character\Cam.cs" />
      <Compile Include="Assets\Scripts\Character\Character.cs" />
-     <Compile Include="Assets\Scripts\Character\CharacterBehaviour.cs" />
+     <Compile Include="Assets\Scripts\Character\CharacterBehaviour\CharacterBehaviour.Shadows.cs" />
+     <Compile Include="Assets\Scripts\Character\CharacterBehaviour\CharacterBehaviour.cs" />
      <Compile Include="Assets\Scripts\Character\Classes\Class.cs" />
      <Compile Include="Assets\Scripts\Character\Classes\Rogue.cs" />
      <Compile Include="Assets\Scripts\Character\Races\Halfling.cs" />
@@ -87,6 +88,7 @@
      <Compile Include="Assets\Scripts\Registry\LevelRegistry.cs" />
      <Compile Include="Assets\Scripts\UI\Render\Grid.cs" />
      <Compile Include="Assets\Scripts\UI\Render\MapRenderer.cs" />
+     <Compile Include="Assets\Scripts\UI\UIHandlers\DragHandler.cs" />
      <Compile Include="Assets\Scripts\UI\UIMain.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Users/Stijn/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

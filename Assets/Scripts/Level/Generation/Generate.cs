@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -42,6 +43,20 @@ public class GenerateBase {
     public virtual void BuildLevel() { }
     public virtual void SpawnEntitys() { }
     public virtual Generate StartGen(float level, string id) { return null; }
+    public Tile GetTileSafe(float x, float y)
+    {
+        if (x < map.GetLength(0) && x > 0 && y < map.GetLength(1) && y > 0)
+        {
+            return map[(int)x, (int)y];
+        }
+        else
+        {
+            return new Tile()
+            {
+                TileNumber = 1
+            };
+        }
+    }
 }
 
 /// <summary>
@@ -62,8 +77,7 @@ public abstract class Generate : GenerateBase {
         BeginPoint();
         EndPoint();
         BuildLevel();
-        //GameState.Instance.Character.Player.transform.position = new Vector2(GameState.Instance.Map.startPoint.x, GameState.Instance.Map.startPoint.y);
-
+        //GameState.Instance.Character.Player.transform.position = new Vector2(GameState.Instance.Map.startPoint.x, GameState.Instance.Map.startPoint.y);       
         return this;
     }
 
@@ -88,13 +102,15 @@ public abstract class Generate : GenerateBase {
         if (start)
         {
             GameState.Instance.Character.Player.transform.position = LastPos;
+            GameState.Instance.Character.Behaviour.CheckTilesVisible();
 
             return;
         }
         else
         {
             GameState.Instance.Character.Player.transform.position = new Vector2(this.startPoint.x, this.startPoint.y);
-
+            GameState.Instance.Character.Behaviour.CheckTilesVisible();
+            
             return;
         }
     }

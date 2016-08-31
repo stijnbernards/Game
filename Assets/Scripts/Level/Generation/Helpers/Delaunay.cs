@@ -345,12 +345,6 @@ class Delaunay
             }
         }
 
-        //First, find the center of the bounding box that contains all of your vertices. We'll call this point C.
-
-//Sort your list of vertices based on each point's angle with respect to C. You can use atan2(point.y - C.y, point.x - C.x) to find the angle. If two or more vertices have the same angle, the one closer to C should come first.
-
-//Then, draw your points in the order they appear in the list. You will end up with a starburst pattern that is non-intersecting and probably non-convex. Example:
-
         return new Voronoi(points.ToList(), startingPoints);
     }
 }

@@ -66,6 +66,7 @@ public class Character : CharacterStats
 
     private GameObject camera;
     private GameObject player;
+    private GameObject miniMap;
 
     private float health;
 
@@ -80,9 +81,17 @@ public class Character : CharacterStats
         this.Player = (GameObject)GameObject.Instantiate(Resources.Load("Player"));
         //Create the camera object
         this.camera = (GameObject)GameObject.Instantiate(Resources.Load("Camera"));
+        //Create minimap camera object
+        this.miniMap = (GameObject)GameObject.Instantiate(Resources.Load("MiniMapCam"));
+        
         Cam cam = this.camera.AddComponent<Cam>();
         cam.target = this.Player;
+
+        Cam camMini = this.miniMap.AddComponent<Cam>();
+        camMini.target = this.Player;
+        
         this.health = MaxHealth;
+        
         UIMain.SetCharLevel();
         UIMain.SetExp();
         UIMain.SetHealth();
@@ -251,7 +260,7 @@ public class CharacterStats
     }
     #endregion
 
-    private float los = 5;
+    private float los = 10;
     private float exp;
     private float level = 1;
     private float expToLevel
