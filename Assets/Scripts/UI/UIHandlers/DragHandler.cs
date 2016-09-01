@@ -5,11 +5,6 @@ using System.Collections;
 
 public class DragHandler : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler 
 {
-	void Start () {
-	
-	}
-
-
     public void OnBeginDrag(PointerEventData eventData)
     {
 
