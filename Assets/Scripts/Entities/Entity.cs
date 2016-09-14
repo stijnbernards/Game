@@ -66,23 +66,40 @@ public partial class Entity : MonoBehaviour
         if ((rad.x < LOS && rad.x > -LOS) && (rad.y <= LOS && rad.y > -LOS))
         {
             if (rad.x > 0)
+            {
                 dir += Vector3.right;
+            }
             else if (rad.x < 0)
+            {
                 dir += Vector3.left;
+            }
 
             if (rad.y > 0)
+            {
                 dir += Vector3.up;
+            }
             else if (rad.y < 0)
+            {
                 dir += Vector3.down;
+            }
 
             RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, 1f);
+
             if (hit.collider != null)
+            {
                 if (hit.collider.gameObject.GetComponent(typeof(CharacterBehaviour)) != null)
+                {
                     GameState.Instance.Character.Hit(Damage, name);
+                }
                 else
+                {
                     FindSpot(dir);
+                }
+            }
             else
+            {
                 transform.position += dir;
+            }
         }
     }
 

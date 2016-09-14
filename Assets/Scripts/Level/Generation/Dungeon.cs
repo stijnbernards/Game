@@ -188,10 +188,10 @@ public class Dungeon : Generate
                 float left =  Position.x + (Size.x / 2) - (width / 2);
                 float top = Position.y - (Size.y / 2) + (height / 2);
 
-                Vector2 topLeft = new Vector2(Position.x, Position.y);
-                Vector2 topRight = new Vector2(Position.x + Size.x, Position.y);
-                Vector2 bottomLeft = new Vector2(Position.x, Position.y - Size.y);
-                Vector2 bottomRight = new Vector2(Position.x + Size.x, Position.y - Size.y);
+                //Vector2 topLeft = new Vector2(Position.x, Position.y);
+                //Vector2 topRight = new Vector2(Position.x + Size.x, Position.y);
+                //Vector2 bottomLeft = new Vector2(Position.x, Position.y - Size.y);
+                //Vector2 bottomRight = new Vector2(Position.x + Size.x, Position.y - Size.y);
 
                 for (float x = left; x < left + width; x++)
                 {

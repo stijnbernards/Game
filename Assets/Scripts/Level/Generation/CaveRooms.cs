@@ -104,6 +104,8 @@ public class CaveRooms : Generate
                 catch (System.Exception e) { };
             });
         });
+
+        this.Obstacles.Add(1);
     }
 
     /// <summary>
@@ -247,33 +249,6 @@ public class CaveRooms : Generate
 
     public override void BuildLevel()
     {
-        //GameObject parent = new GameObject("Map");
-        //GameObject tile = null;
-        //Vector3 offset = new Vector3();
-
-        //if (map != null)
-        //{
-        //    for (int x = 0; x < width; x++)
-        //    {
-        //        for (int y = 0; y < height; y++)
-        //        {
-        //            offset = new Vector3(x, y, 0f);
-
-        //            if (map[x, y].TileNumber == 1)
-        //                tile = GameObject.Instantiate(wallSprite, offset, Quaternion.identity) as GameObject;
-        //            else if (map[x, y].TileNumber == 0)
-        //                tile = GameObject.Instantiate(groundSprite, offset, Quaternion.identity) as GameObject;
-        //            else if (map[x, y].TileNumber == 2)
-        //                tile = GameObject.Instantiate(startSprite, offset, Quaternion.identity) as GameObject;
-        //            else
-        //                tile = GameObject.Instantiate(endSprite, offset, Quaternion.identity) as GameObject;
-
-        //            tile.transform.position = offset;
-        //            tile.transform.parent = parent.transform;
-        //        }
-        //    }
-        //}
-
         GameState.Instance.MapRenderer.DispatchMap(map);
     }
 

@@ -47,16 +47,20 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\Character\Cam.cs" />
      <Compile Include="Assets\Scripts\Character\Character.cs" />
+     <Compile Include="Assets\Scripts\Character\CharacterBehaviour\CharacterBehaviour.AutoExplore.cs" />
      <Compile Include="Assets\Scripts\Character\CharacterBehaviour\CharacterBehaviour.Shadows.cs" />
      <Compile Include="Assets\Scripts\Character\CharacterBehaviour\CharacterBehaviour.cs" />
      <Compile Include="Assets\Scripts\Character\Classes\Class.cs" />
      <Compile Include="Assets\Scripts\Character\Classes\Rogue.cs" />
      <Compile Include="Assets\Scripts\Character\Races\Halfling.cs" />
      <Compile Include="Assets\Scripts\Character\Races\Race.cs" />
-     <Compile Include="Assets\Scripts\Character\Skills\Categories\Category.cs" />
+     <Compile Include="Assets\Scripts\Character\Skills\Category.cs" />
+     <Compile Include="Assets\Scripts\Character\Skills\Skill.cs" />
      <Compile Include="Assets\Scripts\Entities\Entity.Static.cs" />
      <Compile Include="Assets\Scripts\Entities\Entity.cs" />
+     <Compile Include="Assets\Scripts\Entities\Item.Functions.cs" />
      <Compile Include="Assets\Scripts\Entities\Item.cs" />
+     <Compile Include="Assets\Scripts\Entities\ItemEntity.cs" />
      <Compile Include="Assets\Scripts\Entities\Mobs\BaseMonster.cs" />
      <Compile Include="Assets\Scripts\Entities\Mobs\Spoder.cs" />
      <Compile Include="Assets\Scripts\Entities\NPC\BaseNpc.cs" />
@@ -65,6 +69,7 @@
      <Compile Include="Assets\Scripts\Etc\Point.cs" />
      <Compile Include="Assets\Scripts\Game.cs" />
      <Compile Include="Assets\Scripts\GameState.cs" />
+     <Compile Include="Assets\Scripts\Helpers\ComponentHelpers.cs" />
      <Compile Include="Assets\Scripts\Level\Generation\CaveRooms.cs" />
      <Compile Include="Assets\Scripts\Level\Generation\Caves.cs" />
      <Compile Include="Assets\Scripts\Level\Generation\DebugLevel.cs" />
@@ -82,13 +87,18 @@
      <Compile Include="Assets\Scripts\Level\Generation\MainIsland.cs" />
      <Compile Include="Assets\Scripts\Level\LevelStart.cs" />
      <Compile Include="Assets\Scripts\Level\Tile.cs" />
-     <Compile Include="Assets\Scripts\Menu\CreateCharacter.cs" />
-     <Compile Include="Assets\Scripts\Menu\SkillMenu.cs" />
      <Compile Include="Assets\Scripts\Registry\EntityRegistry.cs" />
      <Compile Include="Assets\Scripts\Registry\LevelRegistry.cs" />
+     <Compile Include="Assets\Scripts\UI\Menu\CreateCharacter.cs" />
+     <Compile Include="Assets\Scripts\UI\Menu\InventoryMenu.cs" />
+     <Compile Include="Assets\Scripts\UI\Menu\InventoryMenuText.cs" />
+     <Compile Include="Assets\Scripts\UI\Menu\SkillMenu.cs" />
+     <Compile Include="Assets\Scripts\UI\Menu\SkillTree.cs" />
      <Compile Include="Assets\Scripts\UI\Render\Grid.cs" />
      <Compile Include="Assets\Scripts\UI\Render\MapRenderer.cs" />
-     <Compile Include="Assets\Scripts\UI\UIHandlers\DragHandler.cs" />
+     <Compile Include="Assets\Scripts\UI\UIHandlers\Draggable.cs" />
+     <Compile Include="Assets\Scripts\UI\UIHandlers\EquipmentSlot.cs" />
+     <Compile Include="Assets\Scripts\UI\UIHandlers\InventorySlot.cs" />
      <Compile Include="Assets\Scripts\UI\UIMain.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Users/Stijn/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

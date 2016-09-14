@@ -2,10 +2,13 @@
 using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 //Separated from Entity's bcuz stuff
 public class Character : CharacterStats
 {
+    public Dictionary<int, Item> Equipment = new Dictionary<int, Item>();
+
     public CharacterBehaviour Behaviour
     {
         get
@@ -60,6 +63,21 @@ public class Character : CharacterStats
         }
     }
 
+    public void SetEquipment(int slot, Item item)
+    {
+        if (!Equipment.ContainsKey(slot))
+        {
+            Equipment.Add(slot, item);
+        }
+        else
+        {
+            Equipment[slot].UnEquip();
+            Equipment[slot] = item;
+            
+            item.Equip();
+        }
+    }
+
 
     private Class charClass;
     private Race charRace;
@@ -106,7 +124,7 @@ public class Character : CharacterStats
 #if DEBUG
         //Debug.Log("Hit player for " + amount + " DMG HP LEFT:" + this.health);
 #endif
-        this.Health -= amount;
+        this.Health -= amount - this.Armour;
         UIMain.SetChat("You've been hit for: " + amount + " by: " + name);
     }
 
@@ -119,6 +137,18 @@ public class Character : CharacterStats
 //Character stats are defined here
 public class CharacterStats
 {
+    public const string STATS_MAGIC = "MAGIC";
+    public const string STATS_STRENGTH = "STRENGTH";
+    public const string STATS_ARMOUR = "ARMOUR";
+    public const string STATS_CONSTITUTION = "CONSTITUTION";
+    public const string STATS_DEXTERITY = "DEXTERITY";
+    public const string STATS_DAMAGE = "DAMAGE";
+    public const string STATS_HEALTHREGEN = "HEALTHREGEN";
+    public const string STATS_MAXHEALTH = "MAXHEALTH";
+    public const string STATS_ATTACKSPEED = "ATTACKSPEED";
+    public const string STATS_MOVEMENTSPEED = "MOVESPEED";
+    public const string STATS_LOS = "LOS";
+
     #region Properties
     //Levels
     public float SkillPoints
@@ -139,9 +169,9 @@ public class CharacterStats
         set
         {
             this.strength = value;
-            SkillPoints--;
         }
     }
+
     public float Dexterity
     {
         get
@@ -151,9 +181,9 @@ public class CharacterStats
         set
         {
             this.dexterity = value;
-            SkillPoints--;
         }
     }
+
     public float Constitution
     {
         get
@@ -163,9 +193,9 @@ public class CharacterStats
         set
         {
             this.constitution = value;
-            SkillPoints--;
         }
     }
+
     public float Magic
     {
         get
@@ -175,7 +205,6 @@ public class CharacterStats
         set
         {
             this.magic = value;
-            SkillPoints--;
         }
     }
 
@@ -186,6 +215,7 @@ public class CharacterStats
             return this.expToLevel;
         }
     }
+
     public float Level
     {
         get
@@ -198,6 +228,7 @@ public class CharacterStats
             LevelUp();
         }
     }
+
     public float Exp
     {
         get
@@ -218,7 +249,11 @@ public class CharacterStats
     {
         get
         {
-            return (this.Dexterity / 100f) + 1f;
+            return ((this.Dexterity / 100f) + 1f) * moveSpeed;
+        }
+        set
+        {
+            this.moveSpeed = value;
         }
     }
 
@@ -226,28 +261,47 @@ public class CharacterStats
     {
         get
         {
-            return (this.Dexterity / 100f) + 1f;
+            return ((this.Dexterity / 100f) + 1f) * attackSpeed;
+        }
+        set
+        {
+            this.attackSpeed = value;
         }
     }
+    
     public float HealthRegen
     {
         get
         {
-            return this.Constitution * 0.1f + 0.1f;
+            return this.Constitution * 0.1f + 0.1f + healthRegen;
+        }
+        set
+        {
+            this.healthRegen = value;
         }
     }
+
     public float MaxHealth
     {
         get
         {
-            return this.Constitution * 3.5f + 100;
+            return this.Constitution * 3.5f + 100 + maxHealth;
+        }
+        set
+        {
+            this.maxHealth = value;
         }
     }
+    
     public float Damage
     {
         get
         {
-            return this.Strength + 10;
+            return this.Strength + 10 + damage;
+        }
+        set
+        {
+            this.damage = value;
         }
     }
 
@@ -257,17 +311,120 @@ public class CharacterStats
         {
             return this.los;
         }
+        set
+        {
+            this.los = value;
+        }
     }
+
+    public float Armour
+    {
+        get
+        {
+            return this.armour;
+        }
+        set
+        {
+            this.armour = value;
+        }
+    }
+
     #endregion
 
     private float los = 10;
     private float exp;
     private float level = 1;
+    private float armour = 0;
     private float expToLevel
     {
         get { return CalcExpLevel(); }
     }
-    private float skillPoints, strength, dexterity, constitution, magic;
+    private float skillPoints, strength, dexterity, constitution, magic, healthRegen, maxHealth, damage, attackSpeed, moveSpeed;
+
+    #region StatDictionary
+    private Dictionary<string, VariableReference> statsDictionary = new Dictionary<string, VariableReference>()
+    {
+        {
+            STATS_DEXTERITY, 
+            new VariableReference(
+                () => GameState.Instance.Character.Dexterity,
+                v => { GameState.Instance.Character.Dexterity = (float) v; }
+            )
+        },
+        {
+            STATS_STRENGTH,
+            new VariableReference(
+                () => GameState.Instance.Character.Strength,
+                v => {GameState.Instance.Character.Strength = (float) v; }
+            )
+        },
+        {
+            STATS_CONSTITUTION,
+            new VariableReference(
+                () => GameState.Instance.Character.Constitution,
+                v => {GameState.Instance.Character.Constitution = (float) v; }
+            )
+        },
+        {
+            STATS_MAGIC,
+            new VariableReference(
+                () => GameState.Instance.Character.Magic,
+                v => {GameState.Instance.Character.Magic = (float) v; }
+            )
+        },
+        {
+            STATS_ARMOUR,
+            new VariableReference(
+                () => GameState.Instance.Character.Armour,
+                v => {GameState.Instance.Character.Armour = (float) v; }
+            )
+        },
+        {
+            STATS_HEALTHREGEN,
+            new VariableReference(
+                () => GameState.Instance.Character.HealthRegen,
+                v => {GameState.Instance.Character.HealthRegen = (float) v; }
+            )
+        },
+        {
+            STATS_MAXHEALTH,
+            new VariableReference(
+                () => GameState.Instance.Character.MaxHealth,
+                v => {GameState.Instance.Character.MaxHealth = (float) v; }
+            )
+        },
+        {
+            STATS_DAMAGE,
+            new VariableReference(
+                () => GameState.Instance.Character.Damage,
+                v => {GameState.Instance.Character.Damage = (float) v; }
+            )
+        },
+        {
+            STATS_ATTACKSPEED,
+            new VariableReference(
+                () => GameState.Instance.Character.AttackSpeed,
+                v => {GameState.Instance.Character.AttackSpeed = (float) v; }
+            )
+        },
+        {
+            STATS_MOVEMENTSPEED,
+            new VariableReference(
+                () => GameState.Instance.Character.MoveSpeed,
+                v => {GameState.Instance.Character.MoveSpeed = (float) v; }
+            )
+        },
+        {
+            STATS_LOS,
+            new VariableReference(
+                () => GameState.Instance.Character.LOS,
+                v => {GameState.Instance.Character.LOS = (float) v; }
+            )
+        }
+
+    };
+
+    #endregion StatDictionary
 
     public float CalcExpLevel()
     {
@@ -280,6 +437,31 @@ public class CharacterStats
         this.skillPoints += 3;
         UIMain.SetCharLevel();
         UIMain.SetExp();
+    }
+
+    public float GetStatByString(string statName)
+    {
+        if (statsDictionary.ContainsKey(statName))
+        {
+            return (float) statsDictionary[statName].Get();
+        }
+        else
+        {
+            return -1F;
+        }
+    }
+
+    public bool SetStatByString(string statName, float value)
+    {
+        if (statsDictionary.ContainsKey(statName))
+        {
+            statsDictionary[statName].Set(value);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
 #if DEBUG
@@ -301,4 +483,16 @@ public class CharacterStats
         Debug.Log("/----------------------------------/");
     }
 #endif
+}
+
+public sealed class VariableReference
+{
+    public Func<object> Get { get; private set; }
+    public Action<object> Set { get; private set; }
+
+    public VariableReference(Func<object> getter, Action<object> setter)
+    {
+        Get = getter;
+        Set = setter;
+    }
 }

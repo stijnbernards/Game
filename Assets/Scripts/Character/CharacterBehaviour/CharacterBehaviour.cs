@@ -124,6 +124,24 @@ public partial class CharacterBehaviour : MonoBehaviour {
             return false;
         }
 
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            GameObject Inventory = GameObject.Find("Inventory") as GameObject;
+
+            if (Inventory.GetComponent<CanvasGroup>().alpha == 1)
+            {
+                Inventory.GetComponent<CanvasGroup>().alpha = 0;
+                Inventory.GetComponent<CanvasGroup>().interactable = false;
+                Inventory.GetComponent<CanvasGroup>().blocksRaycasts = false;
+            }
+            else
+            {
+                Inventory.GetComponent<CanvasGroup>().alpha = 1;
+                Inventory.GetComponent<CanvasGroup>().interactable = true;
+                Inventory.GetComponent<CanvasGroup>().blocksRaycasts = true;
+            }
+        }
+
         if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
         {
             dir = Vector2.right;
