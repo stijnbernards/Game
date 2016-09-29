@@ -23,7 +23,7 @@ public class MainIsland : Generate
 
         island = Island.VoronoiToIsland(v2, new Vector2(-100, -100), new Vector2(100, 100));
 
-        HashSet<Vector2> DrawPoints = new HashSet<Vector2>();
+        //HashSet<Vector2> DrawPoints = new HashSet<Vector2>();
 
         foreach (VoronoiEdge edge in v2.Edges.OrderBy(x => x.Midpoint.Point.x).ThenBy(x => x.Midpoint.Point.y))
         {

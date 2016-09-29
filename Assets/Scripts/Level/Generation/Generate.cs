@@ -9,7 +9,7 @@ public class GenerateBase {
     public int height = 100;
     [Range(0, 100)]
     public int randomFillPercent = 50;
-    public float Hardness;
+    public float Difficulty;
     public float Level;
     public string ID;
     public Vector2 LastPos;
@@ -20,11 +20,12 @@ public class GenerateBase {
     public GameObject endSprite = Resources.Load("EndPoint") as GameObject;
 
     public List<GameObject> entities = new List<GameObject>();
+    public List<EntityItem> EntityList = new List<EntityItem>();
 
     public Tile[,] map;
 
-    public Point startPoint;
-    public Point endPoint;
+    public Vector2 startPoint;
+    public Vector2 endPoint;
 
     public List<int> Obstacles = new List<int>();
 
@@ -41,7 +42,21 @@ public class GenerateBase {
 
     public virtual void GenerateLevel() { }
     public virtual void BuildLevel() { }
-    public virtual void SpawnEntitys() { }
+
+    public virtual void SpawnEntitys() 
+    {
+        int x, y;
+
+        foreach (EntityItem ei in EntityList)
+        {
+            for (int i = 0; i < ei.Amount; i++)
+            {
+                FindRandomEmpty(out x, out y);
+                this.entities.Add(Entity.SpawnInWorld(new Vector2(x, y), GameState.Instance.EntityRegistry.GetEntity(ei.Ent)));
+            }
+        }
+    }
+
     public virtual Generate StartGen(float level, string id) { return null; }
     public Tile GetTileSafe(float x, float y)
     {
@@ -70,7 +85,7 @@ public abstract class Generate : GenerateBase {
     {
         this.ID = id;
         GameState.Instance.Map = this;
-        this.Hardness = level;
+        this.Difficulty = level;
         this.Level = level;
         UIMain.SetLevel();
         GenerateLevel();

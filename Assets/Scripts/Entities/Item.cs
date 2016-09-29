@@ -8,24 +8,9 @@ public partial class Item : MonoBehaviour, IPointerClickHandler
     public Dictionary<string, Action<GameObject, GameObject>> Actions = new Dictionary<string, Action<GameObject, GameObject>>();
 
     public Dictionary<string, float> Requirements = new Dictionary<string, float>();
-
     public Dictionary<string, float> Modifiers = new Dictionary<string, float>();
-    
+
     public bool Equipped = false;
-
-    public void Start()
-    {
-        Actions.Add("Equip", (item, parent) => 
-        { 
-            Item.EquipItem(item, parent); 
-        });
-
-        Actions.Add("Drop", (item, parent) =>
-        {
-            Actions = new Dictionary<string, Action<GameObject, GameObject>>();
-            Item.DropItem(item);
-        });
-    }
 
     public float Value
     {
@@ -49,6 +34,20 @@ public partial class Item : MonoBehaviour, IPointerClickHandler
 
     private float value = 0;
     private float equipmentSlot = 0;
+
+    public void Start()
+    {
+        Actions.Add("Equip", (item, parent) =>
+        {
+            Item.EquipItem(item, parent);
+        });
+
+        Actions.Add("Drop", (item, parent) =>
+        {
+            Actions = new Dictionary<string, Action<GameObject, GameObject>>();
+            Item.DropItem(item, GameState.Instance.Character.Behaviour.transform.position);
+        });
+    }
 
     public bool CanEquip()
     {
@@ -103,12 +102,7 @@ public partial class Item : MonoBehaviour, IPointerClickHandler
     {
         if (eventData.button == PointerEventData.InputButton.Right)
         {
-            GameObject rcm = InventoryMenu.RightClickMenu(Actions, gameObject);
+            InventoryMenu.RightClickMenu(Actions, gameObject);
         }
-    }
-
-    public GameObject ToItemEntity()
-    {
-        return gameObject;
     }
 }

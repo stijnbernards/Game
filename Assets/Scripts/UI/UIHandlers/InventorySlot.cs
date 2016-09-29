@@ -39,11 +39,11 @@ public class InventorySlot : MonoBehaviour, IDropHandler
         }
     }
 
-    private bool enabled = true;
+    private bool slotEnabled = true;
 
     public void OnDrop(PointerEventData eventData)
     {
-        if (!ItemInSlot && enabled)
+        if (!ItemInSlot && slotEnabled)
         {
             if (Draggable.CurrentDrag.GetComponent<Item>().Equipped)
             {
@@ -58,7 +58,7 @@ public class InventorySlot : MonoBehaviour, IDropHandler
 
             Draggable.CurrentDrag.transform.SetParent(transform);
         }
-        else if (enabled)
+        else if (slotEnabled)
         {
             if (Draggable.CurrentDrag.transform.parent.GetComponent<EquipmentSlot>() != null && ItemInSlot.GetComponent<Item>().CanEquip() && Draggable.CurrentDrag.transform.parent.GetComponent<EquipmentSlot>().SlotType == ItemInSlot.GetComponent<Item>().EquipmentSlotType)
             {

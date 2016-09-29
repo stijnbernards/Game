@@ -6,8 +6,8 @@ public class DebugLevel : Generate
 {
     public override void BeginPoint() 
     {
-        this.startPoint = new Point(0, 0);
-        this.endPoint = new Point(0, 0);
+        this.startPoint = new Vector2(0, 0);
+        this.endPoint = new Vector2(0, 0);
     }
     public override void EndPoint() { }
 
@@ -47,9 +47,9 @@ public class DebugLevel : Generate
         {
             UIMain.YesNoDialog("Do you want to continue to the Caves?", new System.Action(() => { 
                 if(!GameState.Instance.LevelRegistry.LevelExists("CAVES")){
-                    GameState.Instance.GetLevel<Caves>(Hardness, 4, "CAVES", false); 
+                    GameState.Instance.GetLevel<Caves>(Difficulty, 4, "CAVES", false); 
                 }else{
-                    GameState.Instance.GetLevel<Caves>(Hardness, 0, "CAVES", false); 
+                    GameState.Instance.GetLevel<Caves>(Difficulty, 0, "CAVES", false); 
                 }
             }));
         });
@@ -64,16 +64,35 @@ public class DebugLevel : Generate
             {
                 if (!GameState.Instance.LevelRegistry.LevelExists("CAVES_ROOMS"))
                 {
-                    GameState.Instance.GetLevel<CaveRooms>(Hardness, 8, "CAVES_ROOMS", false);
+                    GameState.Instance.GetLevel<CaveRooms>(Difficulty, 8, "CAVES_ROOMS", false);
                 }
                 else
                 {
-                    GameState.Instance.GetLevel<CaveRooms>(Hardness, 0, "CAVES_ROOMS", false);
+                    GameState.Instance.GetLevel<CaveRooms>(Difficulty, 0, "CAVES_ROOMS", false);
                 }
             }));
         });
 
         map[x, y].TileNumber = 3;
+
+        FindRandomEmpty(out x, out y);
+
+        map[x, y].Action = new Tile.TileAction(() =>
+        {
+            UIMain.YesNoDialog("Do you want to continue to the test1?", new System.Action(() =>
+            {
+                if (!GameState.Instance.LevelRegistry.LevelExists("TEST1"))
+                {
+                    GameState.Instance.GetLevel<Dungeon>(0, 0, "TEST1", false);
+                }
+                else
+                {
+                    GameState.Instance.GetLevel<Dungeon>(0, 0, "TEST1", false);
+                }
+            }));
+        });
+
+        map[x, y].TileNumber = 14;
     }
 
     public override void BuildLevel()

@@ -5,7 +5,7 @@ using System.Linq;
 
 public partial class CharacterBehaviour : MonoBehaviour {
 
-    public delegate void KeydownAction();
+    public delegate bool KeydownAction();
 
     private Vector3 dir;
     private bool moving = false;
@@ -30,11 +30,29 @@ public partial class CharacterBehaviour : MonoBehaviour {
         }
     }
 
+    public bool AddKeyBind(KeyCode[] keycode, KeydownAction action)
+    {
+        for (int i = 0; i < keycode.Length; i++)
+        {
+            if (!AddKeyBind(keycode[i], action))
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public bool RemoveKeyBind(KeyCode keycode)
     {
         actions.Remove(keycode);
 
         return true;
+    }
+
+    public void Start()
+    {
+        RegisterKeyBinds();
     }
 
     public void Update()
@@ -49,7 +67,7 @@ public partial class CharacterBehaviour : MonoBehaviour {
                 {
                     entity.Hit(GameState.Instance.Character.Damage);
                     GameState.Instance.Turn -= 100f / GameState.Instance.Character.AttackSpeed;
-                
+
                     return;
                 }
                 else
@@ -83,92 +101,177 @@ public partial class CharacterBehaviour : MonoBehaviour {
         {
             if (Input.GetKeyDown(key))
             {
-                actions[key].Invoke();
+                return actions[key].Invoke();
+            }
+        }
+
+        return false;
+    }
+
+    public void RegisterKeyBinds()
+    {
+        AddKeyBind(new KeyCode[] { KeyCode.Keypad8, KeyCode.W, KeyCode.UpArrow }, new KeydownAction(
+            () =>
+            {
+                dir = Vector2.up;
+                moving = true;
+                return true;
+            }
+        ));
+
+        AddKeyBind(new KeyCode[] { KeyCode.Keypad2, KeyCode.DownArrow, KeyCode.S }, new KeydownAction(
+            () =>
+            {
+                dir = Vector2.down;
+                moving = true;
+                return true;
+            }
+        ));
+
+        AddKeyBind(new KeyCode[] { KeyCode.Keypad4, KeyCode.A, KeyCode.LeftArrow }, new KeydownAction(
+            () =>
+            {
+                dir = Vector2.left;
+                moving = true;
+                return true;
+            }
+        ));
+
+        AddKeyBind(new KeyCode[] { KeyCode.Keypad6, KeyCode.D, KeyCode.RightArrow }, new KeydownAction(
+            () =>
+            {
+                dir = Vector2.right;
+                moving = true;
+                return true;
+            }
+        ));
+
+        AddKeyBind(KeyCode.Keypad9, new KeydownAction(
+            () =>
+            {
+                dir = new Vector2(1, 1);
+                moving = true;
+                return true;
+            }
+        ));
+
+        AddKeyBind(KeyCode.Keypad7, new KeydownAction(
+            () =>
+            {
+                dir = new Vector2(-1, 1);
+                moving = true;
+                return true;
+            }
+        ));
+
+        AddKeyBind(KeyCode.Keypad1, new KeydownAction(
+            () =>
+            {
+                dir = new Vector2(-1, -1);
+                moving = true;
+                return true;
+            }
+        ));
+
+        AddKeyBind(KeyCode.Keypad3, new KeydownAction(
+            () =>
+            {
+                dir = new Vector2(1, -1);
+                moving = true;
+                return true;
+            }
+        ));
+
+        AddKeyBind(KeyCode.Keypad5, new KeydownAction(
+            () =>
+            {
+                dir = new Vector2(0, 0);
+                moving = true;
+                return true;
+            }
+        ));
+
+        AddKeyBind(KeyCode.Space, new KeydownAction(
+            () =>
+            {
+                RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, 1f);
+
+                if (hit.collider != null)
+                {
+                    Entity entity = (Entity)hit.collider.gameObject.GetComponent(typeof(Entity));
+
+                    if (entity != null)
+                    {
+                        entity.Interact();
+                        GameState.Instance.Turn -= 100f / GameState.Instance.Character.AttackSpeed;
+                    }
+                }
 
                 return false;
             }
-        }
+        ));
 
-        if (Input.GetKeyDown(KeyCode.Space)){
-            //GameState.Instance.Character.DebugLog();
-
-            RaycastHit2D hit = Physics2D.Raycast(transform.position, dir, 1f);
-
-            if (hit.collider != null)
+        AddKeyBind(KeyCode.P, new KeydownAction(
+            () =>
             {
-                Entity entity = (Entity)hit.collider.gameObject.GetComponent(typeof(Entity));
-                
-                if (entity != null)
+                GameObject skillTree = GameObject.Find("SkillTree") as GameObject;
+
+                if (skillTree.GetComponent<CanvasGroup>().alpha == 1)
                 {
-                    entity.Interact();
-                    GameState.Instance.Turn -= 100f / GameState.Instance.Character.AttackSpeed;
+                    skillTree.GetComponent<CanvasGroup>().alpha = 0;
+                    skillTree.GetComponent<CanvasGroup>().interactable = false;
+                    skillTree.GetComponent<CanvasGroup>().blocksRaycasts = false;
                 }
+                else
+                {
+                    skillTree.GetComponent<CanvasGroup>().alpha = 1;
+                    skillTree.GetComponent<CanvasGroup>().interactable = true;
+                    skillTree.GetComponent<CanvasGroup>().blocksRaycasts = true;
+                }
+                return false;
             }
+        ));
 
-            return false;
-        }
-
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            GameObject UI = GameObject.Find("LevelUI") as GameObject;
-            if (UI != null)
+        AddKeyBind(KeyCode.E, new KeydownAction(
+            () =>
             {
-                Destroy(UI);
-            }
-            else
-            {
-                GameObject go = (GameObject)(GameObject.Instantiate(Resources.Load("LevelUI"), new Vector3(0, 0, 0), Quaternion.identity));
-                go.transform.SetParent(GameObject.Find("Canvas").transform, false);
-                go.name = "LevelUI";
-            }
-            return false;
-        }
+                GameObject Inventory = GameObject.Find("Inventory") as GameObject;
 
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            GameObject Inventory = GameObject.Find("Inventory") as GameObject;
+                if (Inventory.GetComponent<CanvasGroup>().alpha == 1)
+                {
+                    Inventory.GetComponent<CanvasGroup>().alpha = 0;
+                    Inventory.GetComponent<CanvasGroup>().interactable = false;
+                    Inventory.GetComponent<CanvasGroup>().blocksRaycasts = false;
+                }
+                else
+                {
+                    Inventory.GetComponent<CanvasGroup>().alpha = 1;
+                    Inventory.GetComponent<CanvasGroup>().interactable = true;
+                    Inventory.GetComponent<CanvasGroup>().blocksRaycasts = true;
+                }
 
-            if (Inventory.GetComponent<CanvasGroup>().alpha == 1)
-            {
-                Inventory.GetComponent<CanvasGroup>().alpha = 0;
-                Inventory.GetComponent<CanvasGroup>().interactable = false;
-                Inventory.GetComponent<CanvasGroup>().blocksRaycasts = false;
+                return false;
             }
-            else
-            {
-                Inventory.GetComponent<CanvasGroup>().alpha = 1;
-                Inventory.GetComponent<CanvasGroup>().interactable = true;
-                Inventory.GetComponent<CanvasGroup>().blocksRaycasts = true;
-            }
-        }
+        ));
 
-        if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+        foreach (GameObject go in GameObject.FindGameObjectsWithTag("SkillSlot"))
         {
-            dir = Vector2.right;
-            moving = true;
-            return true;
-        }
-        else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            dir = Vector2.left;
-            moving = true;
-            return true;
-        }
-        else if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            dir = Vector2.up;
-            moving = true;
-            return true;
-        }
-        else if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            dir = Vector2.down;
-            moving = true;
-            return true;
-        }
-        else
-        {
-            return false;
+            if (go.GetComponent<SkillSlot>() != null)
+            {
+                //Won't work without this line.
+                GameObject go2 = go;
+
+                AddKeyBind(go.GetComponent<SkillSlot>().KeyCode, new KeydownAction(
+                    () => 
+                    {
+                        if (go2.GetComponent<SkillSlot>().SkillItem != null)
+                        {
+                            go2.GetComponent<SkillSlot>().SkillItem.Execute(); 
+                        }
+                        return false;
+                    }
+                ));
+            }
         }
     }
 

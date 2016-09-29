@@ -4,6 +4,11 @@ using UnityEngine;
 
 class Door : Entity
 {
+    public override void Hit(float dmg)
+    {
+        return;
+    }
+
     public override void Action() { }
 
     public override void Interact()

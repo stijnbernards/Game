@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using System;
 using System.Collections;
 
+[Obsolete]
 public class SkillMenu : MonoBehaviour {
 
     Text SkillPoints, Strength, Constitution, Dexterity;

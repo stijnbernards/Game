@@ -37,11 +37,11 @@ public class EquipmentSlot : MonoBehaviour, IDropHandler
         }
     }
 
-    private bool enabled = true;
+    private bool slotEnabled = true;
 
     public void OnDrop(PointerEventData eventData)
     {
-        if (!ItemInSlot && enabled && Draggable.CurrentDrag.GetComponent<Item>().EquipmentSlotType == SlotType && Draggable.CurrentDrag.GetComponent<Item>().CanEquip())
+        if (!ItemInSlot && slotEnabled && Draggable.CurrentDrag.GetComponent<Item>().EquipmentSlotType == SlotType && Draggable.CurrentDrag.GetComponent<Item>().CanEquip())
         {
             Draggable.CurrentDrag.transform.SetParent(transform);
 
@@ -54,7 +54,7 @@ public class EquipmentSlot : MonoBehaviour, IDropHandler
 
             Draggable.CurrentDrag.GetComponent<Item>().Equip();
         }
-        else if (enabled && Draggable.CurrentDrag.GetComponent<Item>().EquipmentSlotType == SlotType && Draggable.CurrentDrag.GetComponent<Item>().CanEquip())
+        else if (slotEnabled && Draggable.CurrentDrag.GetComponent<Item>().EquipmentSlotType == SlotType && Draggable.CurrentDrag.GetComponent<Item>().CanEquip())
         {
             ItemInSlot.GetComponent<Item>().UnEquip();
 

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public partial class Entity : MonoBehaviour 
 {
+    public List<GameObject> Items = new List<GameObject>();
 
     #region Stats
     public bool Physical = true;
@@ -51,6 +52,12 @@ public partial class Entity : MonoBehaviour
     public void Kill()
     {
         GameState.Instance.Character.Exp += Exp;
+
+        if (Items.Count > 0)
+        {
+            Item.DropItem(Items[Random.Range(0, Items.Count - 1)], transform.position);
+        }
+        
         Destroy(gameObject);
     }
 
@@ -116,17 +123,5 @@ public partial class Entity : MonoBehaviour
     private void FindSpot(Vector3 dir)
     {
 
-    }
-}
-
-public struct EntityItem
-{
-    public string Ent;
-    public int Amount;
-
-    public EntityItem(string ent, int amount)
-    {
-        Ent = ent;
-        Amount = amount;
     }
 }

@@ -8,6 +8,11 @@ class Spikes : Entity
         this.Physical = false;
     }
 
+    public override void Hit(float dmg)
+    {
+        return;
+    }
+
     public override void Action() { }
 
     public override void Step()

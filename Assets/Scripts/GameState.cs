@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class GameState : MonoBehaviour
+public partial class GameState : MonoBehaviour
 {
 
     #region Properties
@@ -10,6 +10,10 @@ public class GameState : MonoBehaviour
 
     public EntityRegistry EntityRegistry;
     public LevelRegistry LevelRegistry;
+    public SkillRegistry SkillRegistry;
+    public CategoryRegistry CategoryRegistry;
+
+    public Anvil Anvil;
 
     public float Level = 1;
 
@@ -66,11 +70,7 @@ public class GameState : MonoBehaviour
 
     public void StartState()
     {
-        EntityRegistry = new EntityRegistry();
-        LevelRegistry = new LevelRegistry();
-
-        EntityRegistry.RegisterEntity("Spoder", Resources.Load("Spoder") as GameObject);
-        new Character(new Rogue(), new Halfling());
+        Register();
         MapRenderer = new MapRenderer();
         //Disabled for debugging purposes
         //Application.LoadLevel("Game");
@@ -88,7 +88,7 @@ public class GameState : MonoBehaviour
         }
     }
 
-    public void GetLevel<T>(float Hardness, int level, string identifier, bool end) where T : Generate, new()
+    public void GetLevel<T>(float difficulty, int level, string identifier, bool end) where T : Generate, new()
     {
         Destroy(GameObject.Find("Map"));
 
@@ -106,28 +106,10 @@ public class GameState : MonoBehaviour
         }
         else
         {
-            LevelRegistry.AddLevels<T>(identifier, level);
+            LevelRegistry.AddLevels<T>(identifier, level, difficulty);
             LevelRegistry.GetMap(identifier, 0).ContinueLevel(end);
         }
-
-
-        //UIMain.GameLog("Entered level " + Hardness);
-        //UIMain.SetLevel() ;
-        //new T().StartGen(Hardness);
     }
-
-    //public void EnterLevel<T>(float Hardness, float levels, string identifier) where T : GenerateBase, new()
-    //{
-    //    Destroy(GameObject.Find("Map"));
-
-    //    foreach (GameObject ent in GameState.instance.Map.entities)
-    //    {
-    //        Destroy(ent);
-    //    }
-
-    //    UIMain.GameLog("Entered level " + identifier);
-    //    new T().StartGen(Hardness, levels);
-    //}
 
     public void DestroyObject(GameObject obj)
     {

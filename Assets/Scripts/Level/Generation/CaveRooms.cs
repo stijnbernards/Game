@@ -21,9 +21,9 @@ public class CaveRooms : Generate
             map[x, y].Action = new Tile.TileAction(() =>
             {
                 GameState.Instance.Character.Behaviour.SetMoving(false);
-                GameState.Instance.GetLevel<Caves>(Hardness, (int)Level - 1, this.ID, true);
+                GameState.Instance.GetLevel<Caves>(Difficulty, (int)Level - 1, this.ID, true);
             });
-            this.startPoint = new Point(x, y);
+            this.startPoint = new Vector2(x, y);
         }
         else
         {
@@ -34,10 +34,10 @@ public class CaveRooms : Generate
             map[x, y].Action = new Tile.TileAction(() =>
             {
                 GameState.Instance.Character.Behaviour.SetMoving(false);
-                GameState.Instance.GetLevel<Caves>(Hardness, 0, "DEBUG_LEVEL", true);
+                GameState.Instance.GetLevel<Caves>(Difficulty, 0, "DEBUG_LEVEL", true);
             });
 
-            this.startPoint = new Point(x, y);
+            this.startPoint = new Vector2(x, y);
         }
     }
 
@@ -52,13 +52,13 @@ public class CaveRooms : Generate
             map[x, y].Action = new Tile.TileAction(() =>
             {
                 GameState.Instance.Character.Behaviour.SetMoving(false);
-                GameState.Instance.GetLevel<Caves>(Hardness, (int)Level + 1, this.ID, false);
+                GameState.Instance.GetLevel<Caves>(Difficulty, (int)Level + 1, this.ID, false);
             });
 
             map[x, y].TileNumber = 9;
             map[x, y].Name = "endtile";
 
-            this.endPoint = new Point(x, y);
+            this.endPoint = new Vector2(x, y);
         }
     }
 
@@ -101,7 +101,10 @@ public class CaveRooms : Generate
                 {
                     map[(int)y.x, (int)y.y].TileNumber = 0;
                 }
-                catch (System.Exception e) { };
+                catch (System.Exception e) 
+                {
+                    Debug.Log(e.Message);
+                };
             });
         });
 
@@ -231,7 +234,7 @@ public class CaveRooms : Generate
             }
             catch (System.Exception e)
             {
-
+                Debug.Log(e.Message);
             }
         }
 

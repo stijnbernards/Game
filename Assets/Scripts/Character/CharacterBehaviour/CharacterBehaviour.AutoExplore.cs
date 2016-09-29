@@ -7,7 +7,7 @@ public partial class CharacterBehaviour
     {
         while (true)
         {
-            //do explore
+            Vector2 transform = GameState.Instance.Character.Behaviour.transform.position;
         }
     }
 }

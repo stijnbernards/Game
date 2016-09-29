@@ -40,10 +40,11 @@ public partial class Item
         inventorySlot.GetComponent<InventorySlot>().OnDrop(null);
     }
 
-    public static void DropItem(GameObject item)
+    public static void DropItem(GameObject item, Vector2 position)
     {
         GameObject go = Entity.Default;
-        go.AddComponent<ItemEntity>().Drop(GameState.Instance.Character.Behaviour.transform.position);
+
+        go.AddComponent<ItemEntity>().Drop(position);
         go.AddComponent<Item>().GetCopyOf<Item>(item.GetComponent<Item>());
 
         Instantiate(go);

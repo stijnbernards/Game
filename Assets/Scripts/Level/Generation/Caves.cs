@@ -8,11 +8,6 @@ public class Caves : Generate {
     public GameObject wallSprite = Resources.Load("Stone") as GameObject;
     public int smoothing = 1;
 
-    public List<EntityItem> EntityList = new List<EntityItem>()
-    {
-        new EntityItem("Spoder", 23),
-    };
-
     public override void BeginPoint()
     {
         int x, y;
@@ -25,9 +20,9 @@ public class Caves : Generate {
             map[x, y].Action = new Tile.TileAction(() =>
             {
                 GameState.Instance.Character.Behaviour.SetMoving(false);
-                GameState.Instance.GetLevel<Caves>(Hardness, (int)Level - 1, this.ID, true);
+                GameState.Instance.GetLevel<Caves>(Difficulty, (int)Level - 1, this.ID, true);
             });
-            this.startPoint = new Point(x, y);
+            this.startPoint = new Vector2(x, y);
         }
         else
         {
@@ -38,10 +33,10 @@ public class Caves : Generate {
             map[x, y].Action = new Tile.TileAction(() =>
             {
                 GameState.Instance.Character.Behaviour.SetMoving(false);
-                GameState.Instance.GetLevel<Caves>(Hardness, 0, "DEBUG_LEVEL", true);
+                GameState.Instance.GetLevel<Caves>(Difficulty, 0, "DEBUG_LEVEL", true);
             });
 
-            this.startPoint = new Point(x, y);
+            this.startPoint = new Vector2(x, y);
         }
     }
 
@@ -56,17 +51,16 @@ public class Caves : Generate {
             map[x, y].Action = new Tile.TileAction(() =>
             {
                 GameState.Instance.Character.Behaviour.SetMoving(false);
-                GameState.Instance.GetLevel<Caves>(Hardness, (int)Level + 1, this.ID, false);
+                GameState.Instance.GetLevel<Caves>(Difficulty, (int)Level + 1, this.ID, false);
             });
 
             map[x, y].TileNumber = 9;
             map[x, y].Name = "endtile";
 
-            this.endPoint = new Point(x, y);
+            this.endPoint = new Vector2(x, y);
         }
     }
 
-    //Speaks for itself...
     public override void GenerateLevel()
     {
         while (!Generate());
@@ -97,7 +91,6 @@ public class Caves : Generate {
     {
         seed = System.Guid.NewGuid().ToString();
 
-        //rng based on a random generated GUID hash thing
         System.Random rng = new System.Random(seed.GetHashCode());
 
         for (int x = 0; x < width; x++)
@@ -267,6 +260,7 @@ public class Caves : Generate {
             for (int i = 0; i < ei.Amount; i++)
             {
                 FindRandomEmpty(out x, out y);
+
                 this.entities.Add(Entity.SpawnInWorld(new Vector2(x, y), GameState.Instance.EntityRegistry.GetEntity(ei.Ent)));
             }
         }

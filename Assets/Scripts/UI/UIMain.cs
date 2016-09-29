@@ -9,6 +9,7 @@ public class UIMain {
     private static GameObject content = GameObject.Find("GLContent");
     private static GameObject popup = Resources.Load("Prefabs/Popup") as GameObject;
     private static GameObject popupsPanel = GameObject.Find("Popups");
+    private static GameObject skillTree = GameObject.Find("SkillTree");
 
     
     //TODO:: Replace find!!
@@ -37,6 +38,11 @@ public class UIMain {
         GameLog(text);
     }
 
+    public static void GenerateFirstSkills()
+    {
+        skillTree.GetComponent<SkillTree>().FirstSkills();
+    }
+
     public static void Popup(string text, Action action = null)
     {
         GameObject dialog = GameObject.Instantiate(popup);
@@ -54,6 +60,8 @@ public class UIMain {
                 {
                     action.Invoke();
                 }
+
+                return false;
             }));
     }
 
@@ -75,6 +83,8 @@ public class UIMain {
             {
                 action.Invoke();
             }
+
+            return false;
         }));
 
         GameState.Instance.Character.Behaviour.AddKeyBind(KeyCode.Escape, new CharacterBehaviour.KeydownAction(() =>
@@ -83,6 +93,8 @@ public class UIMain {
 
             GameState.Instance.Character.Behaviour.RemoveKeyBind(KeyCode.Escape);
             GameState.Instance.Character.Behaviour.RemoveKeyBind(KeyCode.Return);
+
+            return false;
         }));
     }
 
