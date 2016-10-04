@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using Anvil;
 
 public partial class GameState : MonoBehaviour
 {
@@ -13,7 +14,7 @@ public partial class GameState : MonoBehaviour
     public SkillRegistry SkillRegistry;
     public CategoryRegistry CategoryRegistry;
 
-    public Anvil Anvil;
+    public AnvilRegistry Anvil;
 
     public float Level = 1;
 

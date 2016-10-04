@@ -1,6 +1,8 @@
 ﻿using System;
 using UnityEngine;
 
+using Anvil.Attributes;
+
 [Mod(TestMod.MOD_ID)]
 public class TestMod
 {
@@ -8,7 +10,7 @@ public class TestMod
 
     public void PreInit()
     {
-        
+        Debug.Log(MOD_ID + " PreInit Called");
     }
 
     public void Load()

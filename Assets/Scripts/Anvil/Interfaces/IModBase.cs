@@ -7,8 +7,8 @@ namespace Anvil.Interfaces
 {
     public interface IModBase
     {
-        public void PreInit();
-        public void Load();
-        public void PostInit();
+        void PreInit();
+        void Load();
+        void PostInit();
     }
 }

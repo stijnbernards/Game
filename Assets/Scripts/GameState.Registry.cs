@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reflection;
 using UnityEngine;
+using Anvil;
 
 public partial class GameState
 {
@@ -10,7 +11,7 @@ public partial class GameState
         LevelRegistry = new LevelRegistry();
         SkillRegistry = new SkillRegistry();
         CategoryRegistry = new CategoryRegistry();
-        Anvil = new Anvil();
+        Anvil = new AnvilRegistry();
 
         Anvil.GetMods();
 
@@ -22,7 +23,7 @@ public partial class GameState
 
         Entities.RegisterEntities();
         Skills.RegisterSkills();
-        Levels.RegisterLevels();
+        //Levels.RegisterLevels();
 
         UIMain.GenerateFirstSkills();
 

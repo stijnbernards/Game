@@ -7,7 +7,7 @@ using Anvil.Attributes;
 
 namespace Anvil
 {
-    public class Anvil
+    public class AnvilRegistry
     {
         private Dictionary<string, ModInfo> registeredMods = new Dictionary<string, ModInfo>();
 
